@@ -9,6 +9,6 @@ module.exports = {
   theme: false,
   plugins: [daisyui],
   daisyui: {
-    themes: process.env.theme
+    themes: light
   },
 };

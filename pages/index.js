@@ -1,17 +1,17 @@
-import { Nunito } from "next/font/google"; // Import Nunito
+import { Nunito } from "next/font/google";
 
-const nunito = Nunito({ subsets: ["latin"] }); // Initialize Nunito
+const nunito = Nunito({ subsets: ["latin"] });
 
 export default function Home() {
   return (
-    <main
-      className={`${nunito.variable} flex flex-col min-h-screen p-2 lg:p-6`}
-    >
-      <h1 class="mb-4 text-3xl font-extrabold text-gray-900 md:text-5xl lg:text-6xl">
-        <span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
+    <main className={`${nunito.variable} flex flex-col min-h-screen p-2 lg:p-6`}>
+      <h1 className="mb-4 text-3xl font-extrabold text-gray-900 md:text-5xl lg:text-6xl">
+        <span className="text-green-500">
           Don't call it a dream <br />
         </span>
-        Call it a plan
+        <span className="text-cyan-500">
+          Call it a plan
+        </span>
       </h1>
     </main>
   );
