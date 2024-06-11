@@ -13,9 +13,6 @@ export default function Home() {
         </span>
         Call it a plan
       </h1>
-      <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
-        
-      </p>
     </main>
   );
 }
