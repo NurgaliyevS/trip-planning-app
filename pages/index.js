@@ -1,4 +1,5 @@
 import { Nunito } from "next/font/google";
+import GoogleButton from "@/components/google-button";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
@@ -19,6 +20,8 @@ export default function Home() {
           Keep track of cities, dates, times, and notes.
         </p>
       </div>
+
+      <GoogleButton />
     </main>
   );
 }
