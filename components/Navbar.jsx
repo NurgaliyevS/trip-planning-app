@@ -1,7 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 function Navbar() {
+  const [showMenu, setShowMenu] = useState(false);
+
   return (
     <header className="container max-w-5xl flex items-center justify-between px-8 py-4 mx-auto">
       <div className="w-1/2 justify-start flex gap-2">
@@ -25,8 +28,13 @@ function Navbar() {
       </div>
 
       <div className="flex lg:hidden">
-        <button className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5">
-          <span class="sr-only">Menu</span>
+        <button
+          onClick={() => {
+            setShowMenu(!showMenu);
+          }}
+          className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5"
+        >
+          <span class="sr-only">Open Menu</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -47,6 +55,45 @@ function Navbar() {
       <div className="hidden lg:flex w-1/2 justify-end">
         <button class="btn btn-sm">Login</button>
       </div>
+
+      {showMenu && (
+        <div className="relative z-50">
+          <div className="fixed inset-y-0 right-0 z-10 w-full px-8 py-4 overflow-y-auto bg-base-200 sm:max-w-sm sm:ring-1 sm:ring-neutral/10 transform origin-right transition ease-in-out duration-300">
+            <div className="flex items-center justify-between">
+              <Link
+                href="/"
+                className="flex items-center gap-2 shrink-0"
+                title="Homepage"
+              >
+                <Image src={"/favicon.ico"} width={32} height={32} alt="Icon" />
+                <span className="font-extrabold text-lg">Trip Plans</span>
+              </Link>
+              <button
+                onClick={() => {
+                  setShowMenu(!showMenu);
+                }}
+                className="-m-2.5 rounded-md p-2.5"
+              >
+                <span className="sr-only">Close menu</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-6 h-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
