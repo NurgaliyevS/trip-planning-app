@@ -1,5 +1,5 @@
-import connectMongoDB from "@/libs/mongodb";
-import User from "@/models/user";
+import connectMongoDB from "@/backend/mongodb";
+import User from "@/backend/user";
 
 export default async function handler(req, res) {
   const { method } = req;

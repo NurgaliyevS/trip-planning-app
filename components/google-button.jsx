@@ -1,4 +1,4 @@
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function GoogleButton() {
   const { data: session } = useSession();
@@ -7,14 +7,15 @@ export default function GoogleButton() {
     return (
       <>
         Signed in as {session.user.email} <br />
+        {JSON.stringify(session, null, 2)}
         <button onClick={() => signOut()}>Sign out</button>
       </>
-    )
+    );
   }
   return (
     <>
       Not signed in <br />
-      <button onClick={() => signIn('google')}>Sign in</button>
+      <button onClick={() => signIn("google")}>Sign in</button>
     </>
-  )
+  );
 }
