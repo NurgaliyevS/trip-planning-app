@@ -23,10 +23,8 @@ export default async function handler(req, res) {
             .status(200)
             .json({ success: true, message: "User found", data: user });
         } else {
-          const users = await User.find();
-          return res
-            .status(200)
-            .json({ success: true, message: "Users found", data: users });
+          const users = await User.find().select('name image'); // Include only necessary fields
+          return res.status(200).json({ success: true, message: "Users found", data: users });
         }
       } catch (error) {
         if (error.kind === "ObjectId") {
