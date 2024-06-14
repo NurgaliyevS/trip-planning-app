@@ -38,8 +38,10 @@ function Navbar() {
             Login
           </button>
         ) : (
-          <img
+          <Image
             src={session.user?.image}
+            width={24}
+            height={24}
             alt="User Profile"
             className="w-5 h-5 rounded-xl"
           />
@@ -100,8 +102,10 @@ function Navbar() {
           </button>
         ) : (
           <div className="flex gap-5 justify-center">
-          <img
+          <Image
             src={session.user?.image}
+            width={24}
+            height={24}
             alt="User Profile"
             className="w-5 h-5 rounded-xl"
           />
