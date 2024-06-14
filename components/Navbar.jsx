@@ -31,9 +31,7 @@ function Navbar() {
 
           <div className="flex lg:hidden">
             <button
-              onClick={() => {
-                setShowMenu(!showMenu);
-              }}
+              onClick={() => setShowMenu(!showMenu)}
               className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5"
             >
               <span className="sr-only">Open Menu</span>
@@ -61,44 +59,42 @@ function Navbar() {
       </header>
 
       <div
-        className={`fixed inset-0 bg-base-200 z-50 p-8 transform transition-transform ${
+        className={`fixed inset-0 bg-base-200 z-50 p-8 transition-transform transform ${
           showMenu ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-2 shrink-0"
-            title="Homepage"
-          >
-            <Image src={"/favicon.ico"} width={32} height={32} alt="Icon" />
-            <span className="font-extrabold text-lg">Trip Plans</span>
-          </Link>
-          <button
-            onClick={() => {
-              setShowMenu(!showMenu);
-            }}
-            className="-m-2.5 rounded-md p-2.5"
-          >
-            <span className="sr-only">Close menu</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-6 h-6"
+        <nav className="container max-w-5xl mx-auto flex flex-col justify-between h-full">
+          <div className="flex items-center justify-between">
+            <Link
+              href="/"
+              className="flex items-center gap-2 shrink-0"
+              title="Homepage"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
-            </svg>
-          </button>
-        </div>
-        <div className="mt-6">
-          <div className="py-4">
+              <Image src={"/favicon.ico"} width={32} height={32} alt="Icon" />
+              <span className="font-extrabold text-lg">Trip Plans</span>
+            </Link>
+            <button
+              onClick={() => setShowMenu(!showMenu)}
+              className="-m-2.5 rounded-md p-2.5"
+            >
+              <span className="sr-only">Close menu</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
+          </div>
+          <div className="mt-6 flex-grow">
             <div className="flex flex-col gap-y-4 items-start">
               <a className="link link-hover" title="Pricing" href="/#pricing">
                 Pricing
@@ -112,7 +108,7 @@ function Navbar() {
               <button className="btn btn-sm">Login</button>
             </div>
           </div>
-        </div>
+        </nav>
       </div>
     </div>
   );
