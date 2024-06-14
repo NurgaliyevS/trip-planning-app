@@ -6,6 +6,9 @@ const UserSchema = new mongoose.Schema(
     email: String,
     image: String,
     expires: String,
+    access_token: String,
+    provider: String,
+    id_token: String
   },
   { timestamps: true }
 );

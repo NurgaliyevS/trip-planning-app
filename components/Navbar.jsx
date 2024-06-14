@@ -1,8 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 function Navbar() {
+  const { data: session } = useSession();
+
   const [showDropdown, setShowDropdown] = useState(false);
 
   const toggleDropdown = () => {
@@ -25,7 +28,22 @@ function Navbar() {
         <a className="link link-hover" title="FAQ" href="/#faq">
           FAQ
         </a>
-        <button className="btn btn-sm ml-4">Login</button>
+        {!session?.user?.image ? (
+          <button
+            onClick={() => {
+              signIn("google");
+            }}
+            className="btn btn-sm ml-4"
+          >
+            Login
+          </button>
+        ) : (
+          <img
+            src={session.user?.image}
+            alt="User Profile"
+            className="w-5 h-5 rounded-xl"
+          />
+        )}
       </div>
 
       <div className="lg:hidden w-full mt-4 flex items-center justify-between">
@@ -61,7 +79,6 @@ function Navbar() {
             <a className="link link-hover" title="FAQ" href="/#faq">
               FAQ
             </a>
-            <button className="btn btn-sm ml-4">Login</button>
           </div>
 
           <a title="Pricing" href="/#pricing" className="block mt-2">
@@ -72,7 +89,25 @@ function Navbar() {
           </a>
         </div>
         <div className="border-b my-4"></div>
-        <button className="w-full btn btn-sm mt-4">Login</button>
+        {!session?.user?.image ? (
+          <button
+            onClick={() => {
+              signIn("google");
+            }}
+            className="w-full btn btn-sm mt-4"
+          >
+            Login
+          </button>
+        ) : (
+          <div className="flex gap-5 justify-center">
+          <img
+            src={session.user?.image}
+            alt="User Profile"
+            className="w-5 h-5 rounded-xl"
+          />
+          <span>{session.user?.name}</span>
+          </div>
+        )}
       </div>
     </header>
   );
