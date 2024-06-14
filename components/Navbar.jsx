@@ -10,7 +10,7 @@ function Navbar() {
   };
 
   return (
-    <header className="container max-w-5xl flex items-center flex-wrap justify-between px-8 py-4 mx-auto">
+    <header className="container max-w-5xl flex items-center flex-wrap justify-between px-8 py-4 mx-auto p-2 lg:p-6">
       <div className="hidden lg:flex items-center gap-2">
         <Link href="/" className="flex items-center" title="Homepage">
           <Image src={"/favicon.ico"} width={32} height={32} alt="Icon" />
