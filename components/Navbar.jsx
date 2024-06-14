@@ -64,14 +64,10 @@ function Navbar() {
             <button className="btn btn-sm ml-4">Login</button>
           </div>
 
-          <a
-            title="Pricing"
-            href="/#pricing"
-            className="block mt-2 hover:text-white"
-          >
+          <a title="Pricing" href="/#pricing" className="block mt-2">
             Pricing
           </a>
-          <a title="FAQ" href="/#faq" className="block mt-2 hover:text-white">
+          <a title="FAQ" href="/#faq" className="block mt-2">
             FAQ
           </a>
         </div>
