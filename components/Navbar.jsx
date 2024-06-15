@@ -1,12 +1,20 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useState, useEffect } from "react";
+import { useSession, signIn } from "next-auth/react";
 
 function Navbar() {
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
 
   const [showDropdown, setShowDropdown] = useState(false);
+
+  // Polling the session every 1 hour
+  useEffect(() => {
+    const interval = setInterval(() => update(), 1000 * 60 * 60);
+    return () => clearInterval(interval);
+  }, [update]);
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -102,14 +110,14 @@ function Navbar() {
           </button>
         ) : (
           <div className="flex gap-5 justify-center">
-          <Image
-            src={session.user?.image}
-            width={24}
-            height={24}
-            alt="User Profile"
-            className="w-5 h-5 rounded-xl"
-          />
-          <span>{session.user?.name}</span>
+            <Image
+              src={session.user?.image}
+              width={24}
+              height={24}
+              alt="User Profile"
+              className="w-5 h-5 rounded-xl"
+            />
+            <span>{session.user?.name}</span>
           </div>
         )}
       </div>
