@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { buyProduct } from "./buyProduct";
 
 function Main() {
   return (
@@ -17,6 +20,7 @@ function Main() {
           role="button"
           className="btn btn-error group btn-wide"
           title="BUY NOW"
+          onClick={buyProduct}
         >
           BUY NOW
         </Link>

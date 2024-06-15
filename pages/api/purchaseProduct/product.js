@@ -1,6 +1,6 @@
-import { lemonSqueezyApiInstance } from "@/utills/axios";
+"use client";
 
-export const dynamic = "force-dynamic";
+import { lemonSqueezyApiInstance } from "@/utills/axios";
 
 export default async function handler(req, res) {
   try {
@@ -16,21 +16,11 @@ export default async function handler(req, res) {
       data: {
         type: "checkouts",
         attributes: {
-          custom_price: 50000,
-          product_options: {
-            enabled_variants: [1],
-          },
-          checkout_options: {
-            button_color: "#2DD272",
-          },
           checkout_data: {
-            discount_code: "10PERCENTOFF",
             custom: {
-              user_id: 123,
+              user_id: "123",
             },
           },
-          expires_at: "2022-10-30T15:20:06Z",
-          preview: true,
         },
         relationships: {
           store: {
@@ -49,15 +39,17 @@ export default async function handler(req, res) {
       },
     });
 
-    const checkoutUrl = response.data.data.attributes.url;
+    console.log(response.data, "data");
+    console.log(response.data.data.attributes.checkout_data, "checkout_data");
 
-    // console.log(checkoutUrl, 'checkout url');
-
-    // console.log(response.data, 'data');
-
-
+    return res.status(200).json({
+      success: true,
+      message: "Checkout created successfully",
+      data: response.data?.data?.attributes.url,
+    });
   } catch (error) {
-    console.log(error);
+    console.log("Error response:", error?.response?.data);
+    console.log("Error message:", error?.message);
     return res
       .status(500)
       .json({ success: false, message: "An error occured" });
