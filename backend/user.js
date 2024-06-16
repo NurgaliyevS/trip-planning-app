@@ -8,7 +8,8 @@ const UserSchema = new mongoose.Schema(
     expires: String,
     access_token: String,
     provider: String,
-    id_token: String
+    id_token: String,
+    user_status: { type: String, default: 'unpaid' },
   },
   { timestamps: true }
 );

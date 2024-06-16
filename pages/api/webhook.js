@@ -1,7 +1,7 @@
-// pages/api/webhook.js
-
+import connectMongoDB from "@/backend/mongodb";
+import User from "@/backend/user";
 import crypto from "crypto";
-import { buffer } from 'micro';
+import { buffer } from "micro";
 
 export const config = {
   api: {
@@ -10,7 +10,7 @@ export const config = {
 };
 
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
+  if (req.method === "POST") {
     try {
       const buf = await buffer(req);
       const rawBody = buf.toString();
@@ -29,17 +29,29 @@ export default async function handler(req, res) {
       const body = JSON.parse(rawBody);
       const eventType = req.headers["x-event-name"];
 
-      console.log(body);
-
       // Handle the event
       if (eventType === "order_created") {
-        const userId = body.meta.custom_data.user_id;
         const isSuccessful = body.data.attributes.status === "paid";
-        
-        // You can now perform actions based on the event data
-        console.log(`Order created for user ${userId}. Success: ${isSuccessful}`);
-        console.log(body.meta.custom_data, 'custom data')
-        console.log(body.data, 'body data');
+
+        await connectMongoDB();
+
+        // find by email
+        const user = await User.findOne({
+          email: body.data.attributes.user_email,
+        });
+
+        if (user) {
+          user.user_status = isSuccessful ? "paid" : "unpaid";
+          await user.save();
+        } else {
+          // create new user
+          const newUser = new User({
+            name: body.data.attributes.user_name,
+            email: body.data.attributes.user_email,
+            user_status: isSuccessful ? "paid" : "unpaid",
+          });
+          await newUser.save();
+        }
       }
 
       res.status(200).json({ message: "Webhook received" });
@@ -48,7 +60,7 @@ export default async function handler(req, res) {
       res.status(500).json({ message: "Server error" });
     }
   } else {
-    res.setHeader('Allow', 'POST');
-    res.status(405).end('Method Not Allowed');
+    res.setHeader("Allow", "POST");
+    res.status(405).end("Method Not Allowed");
   }
 }

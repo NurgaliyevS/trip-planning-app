@@ -2,19 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSession, signIn } from "next-auth/react";
 
 function Navbar() {
-  const { data: session, update } = useSession();
+  const { data: session } = useSession();
 
   const [showDropdown, setShowDropdown] = useState(false);
-
-  // Polling the session every 1 hour
-  useEffect(() => {
-    const interval = setInterval(() => update(), 1000 * 60 * 60);
-    return () => clearInterval(interval);
-  }, [update]);
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -36,7 +30,7 @@ function Navbar() {
         <a className="link link-hover" title="FAQ" href="/#faq">
           FAQ
         </a>
-        {!session?.user?.image ? (
+        {!session?.user ? (
           <button
             onClick={() => {
               signIn("google");
@@ -47,7 +41,7 @@ function Navbar() {
           </button>
         ) : (
           <Image
-            src={session.user?.image}
+            src={session.user?.image || "/defaultProfile.png"}
             width={24}
             height={24}
             alt="User Profile"
@@ -99,7 +93,7 @@ function Navbar() {
           </a>
         </div>
         <div className="border-b my-4"></div>
-        {!session?.user?.image ? (
+        {!session?.user ? (
           <button
             onClick={() => {
               signIn("google");
@@ -111,7 +105,7 @@ function Navbar() {
         ) : (
           <div className="flex gap-5 justify-center">
             <Image
-              src={session.user?.image}
+              src={session.user?.image || "/defaultProfile.png"}
               width={24}
               height={24}
               alt="User Profile"

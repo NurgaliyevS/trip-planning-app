@@ -33,6 +33,7 @@ export default NextAuth({
             access_token: user.account.access_token,
             provider: user.account.provider,
             id_token: user.account.id_token,
+            user_status: 'unpaid',
           });
 
           await newUser.save();
