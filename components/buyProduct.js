@@ -8,9 +8,22 @@ export async function buyProduct() {
       productId: "417018",
     });
 
-    window.open(response.data?.data, "_blank");
+    const url = response.data?.data;
+
+    if (url) {
+      // Create a temporary anchor element
+      const a = document.createElement("a");
+      a.href = url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer"; // Security measure to prevent the new page from accessing the window object
+
+      // Programmatically click the anchor element
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
   } catch (error) {
     console.error(error);
-    // notify that could buy a product
+    // notify that could not buy a product
   }
 }
