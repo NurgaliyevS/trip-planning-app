@@ -23,6 +23,19 @@ export default NextAuth({
 
         let existingUser = await User.findOne({ email });
 
+        if (existingUser && !existingUser?.access_token) {
+          await User.updateOne(
+            { email },
+            {
+              expires: user?.account?.expires_at,
+              access_token: user?.account?.access_token,
+              provider: user?.account?.provider,
+              id_token: user?.account?.id_token,
+              image: user?.user?.image,
+            }
+          );
+        }
+
         if (!existingUser) {
           // If user does not exist, create a new user in MongoDB
           const newUser = new User({
