@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { buyProduct } from "./buyProduct";
 
 function Navbar() {
   const { data: session } = useSession();
@@ -31,14 +32,9 @@ function Navbar() {
           FAQ
         </a>
         {!session?.user ? (
-          <button
-            onClick={() => {
-              signIn("google");
-            }}
-            className="btn btn-sm ml-4"
-          >
+          <a className="link link-hover" title="Login" href="/api/auth/signin">
             Login
-          </button>
+          </a>
         ) : (
           <Image
             src={session.user?.image || "/defaultProfile.png"}
@@ -48,6 +44,15 @@ function Navbar() {
             className="w-5 h-5 rounded-xl"
           />
         )}
+        <Link
+          href="#buy"
+          role="button"
+          className="btn btn-error group"
+          title="BUY NOW"
+          onClick={buyProduct}
+        >
+          BUY NOW
+        </Link>
       </div>
 
       <div className="lg:hidden w-full mt-4 flex items-center justify-between">
@@ -91,29 +96,31 @@ function Navbar() {
           <a title="FAQ" href="/#faq" className="block mt-2">
             FAQ
           </a>
-        </div>
-        <div className="border-b my-4"></div>
-        {!session?.user ? (
-          <button
-            onClick={() => {
-              signIn("google");
-            }}
-            className="w-full btn btn-sm mt-4"
-          >
-            Login
-          </button>
-        ) : (
-          <div className="flex gap-5 justify-center">
+          {!session?.user ? (
+            <a className="link link-hover block mt-2" title="Login" href="/api/auth/signin">
+              Login
+            </a>
+          ) : (
             <Image
               src={session.user?.image || "/defaultProfile.png"}
               width={24}
               height={24}
               alt="User Profile"
-              className="w-5 h-5 rounded-xl"
+              className="w-5 h-5 rounded-xl block mt-2"
             />
-            <span>{session.user?.name}</span>
-          </div>
-        )}
+          )}
+        </div>
+        <div className="border-b my-4"></div>
+
+        <Link
+          href="#buy"
+          role="button"
+          className="btn btn-error group w-full"
+          title="BUY NOW"
+          onClick={buyProduct}
+        >
+          BUY NOW
+        </Link>
       </div>
     </header>
   );
