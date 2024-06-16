@@ -47,7 +47,7 @@ function Navbar() {
         <Link
           href="#buy"
           role="button"
-          className="btn btn-error group"
+          className="btn btn-error group btn-wide"
           title="BUY NOW"
           onClick={buyProduct}
         >
