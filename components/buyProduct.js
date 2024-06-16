@@ -11,16 +11,13 @@ export async function buyProduct() {
     const url = response.data?.data;
 
     if (url) {
-      // Create a temporary anchor element
-      const a = document.createElement("a");
-      a.href = url;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer"; // Security measure to prevent the new page from accessing the window object
-
-      // Programmatically click the anchor element
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      // Attempt to open in new tab
+      const newTab = window.open(url, "_blank");
+      console.log(newTab, 'newTab');
+      if (!newTab || newTab.closed || typeof newTab.closed == 'undefined') {
+        // Fallback if pop-up blocker blocks the new tab
+        window.location.href = url;
+      }
     }
   } catch (error) {
     console.error(error);
