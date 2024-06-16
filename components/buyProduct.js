@@ -13,7 +13,6 @@ export async function buyProduct() {
     if (url) {
       // Attempt to open in new tab
       const newTab = window.open(url, "_blank");
-      console.log(newTab, 'newTab');
       if (!newTab || newTab.closed || typeof newTab.closed == 'undefined') {
         // Fallback if pop-up blocker blocks the new tab
         window.location.href = url;
