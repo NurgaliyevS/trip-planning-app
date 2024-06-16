@@ -97,7 +97,11 @@ function Navbar() {
             FAQ
           </a>
           {!session?.user ? (
-            <a className="link link-hover block mt-2" title="Login" href="/api/auth/signin">
+            <a
+              className="link link-hover block mt-2"
+              title="Login"
+              href="/api/auth/signin"
+            >
               Login
             </a>
           ) : (
@@ -112,15 +116,17 @@ function Navbar() {
         </div>
         <div className="border-b my-4"></div>
 
-        <Link
-          href="#buy"
-          role="button"
-          className="btn btn-error group w-full"
-          title="BUY NOW"
-          onClick={buyProduct}
-        >
-          BUY NOW
-        </Link>
+        <div className="flex justify-center items-center">
+          <Link
+            href="#buy"
+            role="button"
+            className="btn btn-error group btn-wide"
+            title="BUY NOW"
+            onClick={buyProduct}
+          >
+            BUY NOW
+          </Link>
+        </div>
       </div>
     </header>
   );
