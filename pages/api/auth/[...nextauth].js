@@ -4,7 +4,7 @@ import NextAuth from "next-auth";
 import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
 import User from "@/backend/user";
-import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "@/backend/mongodbClient";
 import connectMongoDB from "@/backend/mongodb";
 
@@ -13,11 +13,12 @@ export default NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
     }),
     EmailProvider({
       server: process.env.EMAIL_SERVER,
       from: "noreply@mg.tripplanss.com",
-      maxAge: 24 * 60 * 60, // How long email links are valid for (default 24h)
+      allowDangerousEmailAccountLinking: true,
     }),
   ],
   callbacks: {
