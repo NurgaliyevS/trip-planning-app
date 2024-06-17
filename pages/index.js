@@ -2,6 +2,7 @@ import { Nunito } from "next/font/google";
 import Main from "@/components/Main";
 import Navbar from "@/components/Navbar";
 import Ads from "@/components/Ads";
+import Core from "@/components/Core";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
@@ -13,6 +14,7 @@ export default function Home() {
       <Navbar />
       <Main />
       <Ads />
+      <Core />
     </main>
   );
 }
