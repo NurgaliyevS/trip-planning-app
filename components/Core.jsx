@@ -1,6 +1,6 @@
 import BigPlane from "@/public/BigPlane";
-import { useEffect, useState, Fragment } from "react";
-import { useForm, FormProvider } from "react-hook-form";
+import { useEffect, Fragment } from "react";
+import { useForm, FormProvider, useFieldArray } from "react-hook-form";
 
 function Card({ index, totalSteps, register }) {
   const todayDate = new Date().toISOString().split("T")[0];
@@ -15,9 +15,7 @@ function Card({ index, totalSteps, register }) {
 
     if (textarea) {
       textarea.addEventListener("input", () => autoGrow(textarea));
-
-      // Initial call to set the correct height based on content
-      autoGrow(textarea);
+      autoGrow(textarea); // Initial call to set the correct height based on content
     }
   }, [index]);
 
@@ -88,51 +86,26 @@ function Card({ index, totalSteps, register }) {
 }
 
 function Core() {
-  const [rows, setRows] = useState([[1, 2, 3]]); // Initialize with one row containing three cards
-  const methods = useForm();
-  const { handleSubmit } = methods;
+  const todayDate = new Date().toISOString().split("T")[0];
+  const methods = useForm({
+    defaultValues: {
+      cards: [
+        { country: "", city: "", date: todayDate, time: "", note: "" },
+        { country: "", city: "", date: todayDate, time: "", note: "" },
+        { country: "", city: "", date: todayDate, time: "", note: "" },
+      ],
+    },
+  });
 
-  const addCard = () => {
-    const lastRow = rows[rows.length - 1];
-    if (lastRow.length < 3) {
-      setRows((prevRows) => {
-        const newRows = [...prevRows];
-        newRows[newRows.length - 1] = [...lastRow, rows.flat().length + 1];
-        return newRows;
-      });
-    } else {
-      setRows((prevRows) => [...prevRows, [rows.flat().length + 1]]);
-    }
-  };
-
-  const removeCard = () => {
-    if (rows.length > 1) {
-      setRows((prevRows) => {
-        const newRows = [...prevRows];
-        newRows.pop();
-        return newRows;
-      });
-    }
-  };
+  const { handleSubmit, control } = methods;
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "cards",
+  });
 
   const onSubmit = (data) => {
     console.log(data);
   };
-
-  const elements = rows.map((row, rowIndex) => (
-    <div key={`row-${rowIndex}`} className="flex flex-wrap gap-5 mb-10">
-      {row.map((index, cardIndex) => (
-        <Fragment key={`card-${index}`}>
-          <Card index={index} totalSteps={rows.flat().length} register={methods.register} />
-          {cardIndex !== row.length - 1 && (
-            <div className="flex items-center justify-center">
-              <BigPlane className="flex items-center justify-center" />
-            </div>
-          )}
-        </Fragment>
-      ))}
-    </div>
-  ));
 
   return (
     <FormProvider {...methods}>
@@ -140,28 +113,49 @@ function Core() {
         <div className="flex justify-center mb-5">
           <button
             type="button"
-            onClick={addCard}
+            onClick={() => append({})}
             className="btn btn-primary mr-2 btn-md"
           >
             Add New Card
           </button>
           <button
             type="button"
-            onClick={removeCard}
-            className="btn btn-secondary"
-            disabled={rows.length === 1 && rows[0].length === 3}
+            onClick={() => fields.length > 1 && remove(fields.length - 1)}
+            className="btn btn-secondary btn-md"
+            disabled={fields.length === 1 && fields[0].country === ""}
           >
             Remove Last Card
           </button>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {elements}
-          <div className="flex justify-center mt-10">
+
+        <div className="flex flex-wrap gap-5 mb-10">
+          {fields.map((field, index) => {
+            return (
+              <Fragment key={field.id}>
+                <div className="flex flex-col items-center justify-center">
+                  <Card
+                    index={index + 1}
+                    totalSteps={fields.length}
+                    register={methods.register}
+                  />
+                </div>
+                {index < fields.length - 1 && (
+                  <div className="flex items-center justify-center">
+                    <BigPlane />
+                  </div>
+                )}
+              </Fragment>
+            );
+          })}
+        </div>
+
+        <div className="flex justify-center mt-10">
+          <form onSubmit={handleSubmit(onSubmit)}>
             <button type="submit" className="btn btn-success btn-wide">
               Submit
             </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </section>
     </FormProvider>
   );
