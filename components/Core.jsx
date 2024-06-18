@@ -121,27 +121,31 @@ function Core() {
           <button
             type="button"
             onClick={() => fields.length > 1 && remove(fields.length - 1)}
-            className="btn btn-secondary btn-md"
+            className="btn btn-secondary mr-2 btn-md"
             disabled={fields.length === 1 && fields[0].country === ""}
           >
             Remove Last Card
           </button>
+
+          <button type="submit" className="btn btn-success btn-md">
+              Submit
+            </button>
         </div>
 
         <div className="flex flex-wrap gap-5 mb-10">
           {fields.map((field, index) => {
             return (
               <Fragment key={field.id}>
-                <div className="flex flex-col items-center justify-center">
+                <div className="flex flex-col items-center justify-between">
                   <Card
                     index={index + 1}
                     totalSteps={fields.length}
                     register={methods.register}
                   />
                 </div>
-                {index < fields.length - 1 && (
+                {index !== fields.length - 1 && (
                   <div className="flex items-center justify-center">
-                    <BigPlane />
+                    {index % 3 !== 2 && <BigPlane />}
                   </div>
                 )}
               </Fragment>
@@ -151,9 +155,6 @@ function Core() {
 
         <div className="flex justify-center mt-10">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <button type="submit" className="btn btn-success btn-wide">
-              Submit
-            </button>
           </form>
         </div>
       </section>
