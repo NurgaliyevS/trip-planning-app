@@ -3,8 +3,6 @@ import { useEffect, Fragment } from "react";
 import { useForm, FormProvider, useFieldArray } from "react-hook-form";
 
 function Card({ index, totalSteps, register }) {
-  const todayDate = new Date().toISOString().split("T")[0];
-
   useEffect(() => {
     const textarea = document.getElementById(`autoGrowTextarea${index}`);
 
@@ -28,7 +26,7 @@ function Card({ index, totalSteps, register }) {
           ? "End"
           : `Location ${index}`}
       </span>
-      <div className="card bg-base-100 shadow-xl max-w-64">
+      <div className="card bg-white border border-gray-200 max-w-64 shadow-xl">
         <div className="card-body gap-6">
           <label className="input input-bordered flex items-center gap-2">
             Country:
@@ -56,8 +54,8 @@ function Card({ index, totalSteps, register }) {
               {...register(`cards[${index - 1}].date`)}
               type="text"
               className="grow"
-              defaultValue={todayDate}
-              placeholder={todayDate}
+              defaultValue={"1st of August"}
+              placeholder={"1st of August"}
             />
           </label>
 
@@ -86,13 +84,18 @@ function Card({ index, totalSteps, register }) {
 }
 
 function Core() {
-  const todayDate = new Date().toISOString().split("T")[0];
   const methods = useForm({
     defaultValues: {
       cards: [
-        { country: "", city: "", date: todayDate, time: "", note: "" },
-        { country: "", city: "", date: todayDate, time: "", note: "" },
-        { country: "", city: "", date: todayDate, time: "", note: "" },
+        { country: "", city: "", date: "1st of August", time: "", note: "" },
+        { country: "", city: "", date: "5th of August", time: "", note: "" },
+        {
+          country: "",
+          city: "",
+          date: "20th of the August",
+          time: "",
+          note: "",
+        },
       ],
     },
   });
@@ -114,22 +117,18 @@ function Core() {
           <button
             type="button"
             onClick={() => append({})}
-            className="btn btn-primary mr-2 btn-md"
+            className="btn mr-2 btn-md btn-active text-white"
           >
             Add New Card
           </button>
           <button
             type="button"
             onClick={() => fields.length > 1 && remove(fields.length - 1)}
-            className="btn btn-secondary mr-2 btn-md"
+            className="btn btn-error text-white btn-md"
             disabled={fields.length === 1 && fields[0].country === ""}
           >
             Remove Last Card
           </button>
-
-          <button type="submit" className="btn btn-success btn-md">
-              Submit
-            </button>
         </div>
 
         <div className="flex flex-wrap gap-5 mb-10">
@@ -155,6 +154,12 @@ function Core() {
 
         <div className="flex justify-center mt-10">
           <form onSubmit={handleSubmit(onSubmit)}>
+            <button
+              type="submit"
+              className="btn btn-success btn-md bg-green-500 text-white btn-wide"
+            >
+              Submit
+            </button>
           </form>
         </div>
       </section>
