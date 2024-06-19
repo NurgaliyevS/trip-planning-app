@@ -4,6 +4,7 @@ import { useForm, FormProvider, useFieldArray } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import Card from "./Card";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function Core() {
   const [width, setWidth] = useState(0);
@@ -24,20 +25,22 @@ function Core() {
           id: response.data.data[index]._id,
         }));
         methods.reset({ cards: updatedCard });
+        toast.success("Trips updated successfully!");
       } else {
         const response = await axios.post("/api/trips/trip", {
           ...data,
           email: session?.user?.email,
         });
-        // Update form data with the IDs returned from the server
         const updatedCards = data.cards.map((card, index) => ({
           ...card,
           id: response.data.data[index]._id,
         }));
         methods.reset({ cards: updatedCards });
+        toast.success("Trips saved successfully!");
       }
     } catch (error) {
       console.error(error);
+      toast.error("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
