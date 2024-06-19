@@ -8,10 +8,12 @@ import axios from "axios";
 function Core() {
   const [width, setWidth] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const modalRef = useRef(null);
 
   const saveTrips = async (data, isUpdate = false) => {
     try {
+      setIsLoading(true);
       if (isUpdate) {
         const response = await axios.put("/api/trips/trip", {
           ...data,
@@ -36,6 +38,8 @@ function Core() {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -170,6 +174,7 @@ function Core() {
               <button
                 type="submit"
                 className="btn btn-success btn-md bg-green-500 text-white btn-wide"
+                disabled={isLoading}
               >
                 Submit
               </button>
