@@ -5,8 +5,20 @@ import { useSession } from "next-auth/react";
 import Card from "./Card";
 
 function Core() {
+  const [width, setWidth] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const modalRef = useRef(null);
+
+  useEffect(() => {
+    setWidth(window.innerWidth);
+    const handleResize = () => setWidth(window.innerWidth);
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const { data: session } = useSession();
 
@@ -69,7 +81,9 @@ function Core() {
   const handleLogin = () => {
     window.location.href = "/api/auth/signin";
     handleCloseModal();
-  }
+  };
+
+  console.log(width, "width");
 
   return (
     <>
@@ -97,16 +111,30 @@ function Core() {
             {fields.map((field, index) => {
               return (
                 <Fragment key={field.id}>
-                  <div className="flex flex-col items-center justify-between">
-                    <Card
-                      index={index + 1}
-                      totalSteps={fields.length}
-                      register={methods.register}
-                    />
-                  </div>
-                  {index !== fields.length - 1 && (
-                    <div className="flex items-center justify-center">
-                      {index % 3 !== 2 && <BigPlane />}
+                  {width >= 724 && (
+                    <>
+                      <div className="flex flex-col items-center justify-between">
+                        <Card
+                          index={index + 1}
+                          totalSteps={fields.length}
+                          register={methods.register}
+                        />
+                      </div>
+                      {index !== fields.length - 1 && (
+                        <div className="flex items-center justify-center">
+                          {index % 3 !== 2 && <BigPlane />}
+                        </div>
+                      )}
+                    </>
+                  )}
+                  {width < 724 && (
+                    <div className="flex flex-col items-center justify-between gap-7">
+                      <Card
+                        index={index + 1}
+                        totalSteps={fields.length}
+                        register={methods.register}
+                      />
+                      {index !== fields.length - 1 && <BigPlane />}
                     </div>
                   )}
                 </Fragment>

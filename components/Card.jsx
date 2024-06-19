@@ -25,7 +25,7 @@ function Card({ index, totalSteps, register }) {
           ? "End"
           : `Location ${index}`}
       </span>
-      <div className="card bg-white border border-gray-200 max-w-64 shadow-xl">
+      <div className="card bg-white border border-gray-200 shadow-xl lg:max-w-64 max-w-96">
         <div className="card-body gap-6">
           <div className="flex flex-col gap-2">
             <label htmlFor={`country${index}`} className="label-text">
