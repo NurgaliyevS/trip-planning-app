@@ -10,10 +10,28 @@ function Core() {
   const [showModal, setShowModal] = useState(false);
   const modalRef = useRef(null);
 
-  const saveTrips = async (data) => {
+  const saveTrips = async (data, isUpdate = false) => {
     try {
-      const response = await axios.post("/api/trips/trip", { ...data, email: session?.user?.email });
-      console.log(response.data, 'data');
+      if (isUpdate) {
+        console.log(data, 'data');
+        const response = await axios.put("/api/trips/trip", {
+          ...data,
+          email: session?.user?.email,
+        });
+        console.log(response.data, "data");
+      } else {
+        const response = await axios.post("/api/trips/trip", {
+          ...data,
+          email: session?.user?.email,
+        });
+        // Update form data with the IDs returned from the server
+        const updatedCards = data.cards.map((card, index) => ({
+          ...card,
+          id: response.data.data[index]._id,
+        }));
+        methods.reset({ cards: updatedCards });
+        console.log(response.data, "data");
+      }
     } catch (error) {
       console.error(error);
     }
@@ -35,15 +53,9 @@ function Core() {
   const methods = useForm({
     defaultValues: {
       cards: [
-        { country: "", city: "", date: "1st of August", time: "", note: "" },
-        { country: "", city: "", date: "5th of August", time: "", note: "" },
-        {
-          country: "",
-          city: "",
-          date: "20th of August",
-          time: "",
-          note: "",
-        },
+        { country: "", city: "", date: "1st of August", time: "", note: "", id: "" },
+        { country: "", city: "", date: "5th of August", time: "", note: "", id: "" },
+        { country: "", city: "", date: "20th of August", time: "", note: "", id: "" },
       ],
     },
   });
@@ -55,12 +67,15 @@ function Core() {
   });
 
   const onSubmit = (data) => {
+    const hasIds = data.cards.some((card) => card.id);
+    console.log(data, 'data');
+    console.log(hasIds, 'hasIds');
     if (!session) {
       localStorage.setItem("savedData", JSON.stringify(data));
       setShowModal(true);
     }
     if (session) {
-      saveTrips(data);
+      saveTrips(data, hasIds);
     }
   };
 
@@ -102,7 +117,7 @@ function Core() {
           <div className="flex justify-center mb-5">
             <button
               type="button"
-              onClick={() => append({})}
+              onClick={() => append({ country: "", city: "", date: "", time: "", note: "", id: "" })}
               className="btn mr-2 btn-md btn-active text-white"
             >
               Add New Card
@@ -118,38 +133,36 @@ function Core() {
           </div>
 
           <div className="flex flex-wrap gap-5 mb-10 items-center justify-center lg:justify-start">
-            {fields.map((field, index) => {
-              return (
-                <Fragment key={field.id}>
-                  {width >= 724 && (
-                    <>
-                      <div className="flex flex-col items-center justify-between">
-                        <Card
-                          index={index + 1}
-                          totalSteps={fields.length}
-                          register={methods.register}
-                        />
-                      </div>
-                      {index !== fields.length - 1 && (
-                        <div className="flex items-center justify-center">
-                          {index % 3 !== 2 && <BigPlane />}
-                        </div>
-                      )}
-                    </>
-                  )}
-                  {width < 724 && (
-                    <div className="flex flex-col items-center justify-between gap-7">
+            {fields.map((field, index) => (
+              <Fragment key={field.id}>
+                {width >= 724 && (
+                  <>
+                    <div className="flex flex-col items-center justify-between">
                       <Card
                         index={index + 1}
                         totalSteps={fields.length}
                         register={methods.register}
                       />
-                      {index !== fields.length - 1 && <BigPlane />}
                     </div>
-                  )}
-                </Fragment>
-              );
-            })}
+                    {index !== fields.length - 1 && (
+                      <div className="flex items-center justify-center">
+                        {index % 3 !== 2 && <BigPlane />}
+                      </div>
+                    )}
+                  </>
+                )}
+                {width < 724 && (
+                  <div className="flex flex-col items-center justify-between gap-7">
+                    <Card
+                      index={index + 1}
+                      totalSteps={fields.length}
+                      register={methods.register}
+                    />
+                    {index !== fields.length - 1 && <BigPlane />}
+                  </div>
+                )}
+              </Fragment>
+            ))}
           </div>
 
           <div className="flex justify-center mt-10">

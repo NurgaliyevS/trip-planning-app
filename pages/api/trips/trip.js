@@ -38,11 +38,33 @@ export default async function handler(req, res) {
       }
     case "PUT":
       try {
-        const trip = await Trip.findByIdAndUpdate(req.query, req.body, {
-          new: true,
-          runValidators: true,
-        });
-        if (!trip) {
+        const ids = req.body.cards.map((card) => card.id);
+
+        console.log(ids, 'ids');
+
+        // can you add logic if id is empty then create new trip
+        // else update the existing trip
+
+        const trips = await Trip.find({ _id: { $in: ids } });
+
+        console.log(trips, 'trips');
+
+        const updatedTrips = await Promise.all(
+          trips.map((trip, index) => {
+            const card = req.body.cards[index];
+            trip.country = card.country;
+            trip.city = card.city;
+            trip.date = card.date;
+            trip.time = card.time;
+            trip.note = card.note;
+            trip.email = req.body.email;
+            return trip.save();
+          })
+        );
+
+        console.log(updatedTrips, "updatedTrips");
+
+        if (!trips) {
           return res
             .status(404)
             .json({ success: false, message: "Trip not found" });
@@ -52,7 +74,7 @@ export default async function handler(req, res) {
           .json({
             success: true,
             message: "Trip updated successfully",
-            data: trip,
+            data: updatedTrips,
           });
       } catch (error) {
         return res.status(400).json({ success: false, message: "Bad request" });
