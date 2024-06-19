@@ -13,12 +13,15 @@ function Core() {
   const saveTrips = async (data, isUpdate = false) => {
     try {
       if (isUpdate) {
-        console.log(data, 'data');
         const response = await axios.put("/api/trips/trip", {
           ...data,
           email: session?.user?.email,
         });
-        console.log(response.data, "data");
+        const updatedCard = data.cards.map((card, index) => ({
+          ...card,
+          id: response.data.data[index]._id,
+        }));
+        methods.reset({ cards: updatedCard });
       } else {
         const response = await axios.post("/api/trips/trip", {
           ...data,
@@ -30,7 +33,6 @@ function Core() {
           id: response.data.data[index]._id,
         }));
         methods.reset({ cards: updatedCards });
-        console.log(response.data, "data");
       }
     } catch (error) {
       console.error(error);
@@ -68,8 +70,6 @@ function Core() {
 
   const onSubmit = (data) => {
     const hasIds = data.cards.some((card) => card.id);
-    console.log(data, 'data');
-    console.log(hasIds, 'hasIds');
     if (!session) {
       localStorage.setItem("savedData", JSON.stringify(data));
       setShowModal(true);

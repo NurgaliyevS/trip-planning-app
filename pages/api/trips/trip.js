@@ -26,56 +26,50 @@ export default async function handler(req, res) {
             userEmail: req.body.email,
           }))
         );
-        return res
-          .status(201)
-          .json({
-            success: true,
-            message: "Trip created successfully",
-            data: newTrip,
-          });
+        return res.status(201).json({
+          success: true,
+          message: "Trip created successfully",
+          data: newTrip,
+        });
       } catch (error) {
         return res.status(400).json({ success: false, message: "Bad request" });
       }
     case "PUT":
       try {
-        const ids = req.body.cards.map((card) => card.id);
+        const { email, cards } = req.body;
+        const updatePromises = cards.map(async (card) => {
+          if (card.id) {
+            // Update existing trip
+            const trip = await Trip.findById(card.id);
+            if (trip) {
+              trip.country = card.country;
+              trip.city = card.city;
+              trip.date = card.date;
+              trip.time = card.time;
+              trip.note = card.note;
+              trip.userEmail = email;
+              return trip.save();
+            } else {
+              return null;
+            }
+          } else {
+            // Create new trip
+            const newTrip = new Trip({
+              ...card,
+              userEmail: email,
+            });
+            return newTrip.save();
+          }
+        });
 
-        console.log(ids, 'ids');
+        const results = await Promise.all(updatePromises);
+        const successfulUpdates = results.filter(result => result !== null);
 
-        // can you add logic if id is empty then create new trip
-        // else update the existing trip
-
-        const trips = await Trip.find({ _id: { $in: ids } });
-
-        console.log(trips, 'trips');
-
-        const updatedTrips = await Promise.all(
-          trips.map((trip, index) => {
-            const card = req.body.cards[index];
-            trip.country = card.country;
-            trip.city = card.city;
-            trip.date = card.date;
-            trip.time = card.time;
-            trip.note = card.note;
-            trip.email = req.body.email;
-            return trip.save();
-          })
-        );
-
-        console.log(updatedTrips, "updatedTrips");
-
-        if (!trips) {
-          return res
-            .status(404)
-            .json({ success: false, message: "Trip not found" });
-        }
-        return res
-          .status(200)
-          .json({
-            success: true,
-            message: "Trip updated successfully",
-            data: updatedTrips,
-          });
+        return res.status(200).json({
+          success: true,
+          message: "Trips processed successfully",
+          data: successfulUpdates,
+        });
       } catch (error) {
         return res.status(400).json({ success: false, message: "Bad request" });
       }
@@ -87,13 +81,11 @@ export default async function handler(req, res) {
             .status(404)
             .json({ success: false, message: "Trip not found" });
         }
-        return res
-          .status(200)
-          .json({
-            success: true,
-            message: "Trip deleted successfully",
-            data: trip,
-          });
+        return res.status(200).json({
+          success: true,
+          message: "Trip deleted successfully",
+          data: trip,
+        });
       } catch (error) {
         return res.status(400).json({ success: false, message: "Bad request" });
       }
