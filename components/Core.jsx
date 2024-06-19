@@ -83,8 +83,6 @@ function Core() {
     handleCloseModal();
   };
 
-  console.log(width, "width");
-
   return (
     <>
       <FormProvider {...methods}>
