@@ -38,7 +38,7 @@ function Card({ index, totalSteps, register }) {
               type="text"
               className="input input-bordered grow"
               placeholder="USA"
-              style={{ wordWrap: 'break-word', whiteSpace: 'normal' }}
+              style={{ wordWrap: "break-word", whiteSpace: "normal" }}
             />
           </div>
 
@@ -52,7 +52,7 @@ function Card({ index, totalSteps, register }) {
               type="text"
               className="input input-bordered grow"
               placeholder="LA"
-              style={{ wordWrap: 'break-word', whiteSpace: 'normal' }}
+              style={{ wordWrap: "break-word", whiteSpace: "normal" }}
             />
           </div>
 
@@ -67,7 +67,7 @@ function Card({ index, totalSteps, register }) {
               className="input input-bordered grow"
               defaultValue="1st of August"
               placeholder="1st of August"
-              style={{ wordWrap: 'break-word', whiteSpace: 'normal' }}
+              style={{ wordWrap: "break-word", whiteSpace: "normal" }}
             />
           </div>
 
@@ -81,7 +81,7 @@ function Card({ index, totalSteps, register }) {
               type="text"
               className="input input-bordered grow"
               placeholder="5:30 pm"
-              style={{ wordWrap: 'break-word', whiteSpace: 'normal' }}
+              style={{ wordWrap: "break-word", whiteSpace: "normal" }}
             />
           </div>
 
@@ -148,7 +148,7 @@ function Core() {
           </button>
         </div>
 
-        <div className="flex flex-wrap gap-5 mb-10">
+        <div className="flex flex-wrap gap-5 mb-10 items-center justify-center lg:justify-start">
           {fields.map((field, index) => {
             return (
               <Fragment key={field.id}>
