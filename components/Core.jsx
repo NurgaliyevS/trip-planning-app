@@ -3,11 +3,21 @@ import { useEffect, Fragment, useState, useRef } from "react";
 import { useForm, FormProvider, useFieldArray } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import Card from "./Card";
+import axios from "axios";
 
 function Core() {
   const [width, setWidth] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const modalRef = useRef(null);
+
+  const saveTrips = async (data) => {
+    try {
+      const response = await axios.post("/api/trips/trip", { ...data, email: session?.user?.email });
+      console.log(response.data, 'data');
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     setWidth(window.innerWidth);
@@ -45,10 +55,12 @@ function Core() {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
     if (!session) {
       localStorage.setItem("savedData", JSON.stringify(data));
       setShowModal(true);
+    }
+    if (session) {
+      saveTrips(data);
     }
   };
 
