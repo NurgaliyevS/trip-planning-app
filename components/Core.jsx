@@ -13,13 +13,36 @@ function Core() {
   const modalRef = useRef(null);
 
   const { data: session } = useSession();
-  
+  const sessionEmail = session?.user?.email;
+  const hasFetchedRef = useRef(false);
+
   const methods = useForm({
     defaultValues: {
       cards: [
-        { country: "", city: "", date: "1st of August", time: "", note: "", id: "" },
-        { country: "", city: "", date: "5th of August", time: "", note: "", id: "" },
-        { country: "", city: "", date: "20th of August", time: "", note: "", id: "" },
+        {
+          country: "",
+          city: "",
+          date: "1st of August",
+          time: "",
+          note: "",
+          id: "",
+        },
+        {
+          country: "",
+          city: "",
+          date: "5th of August",
+          time: "",
+          note: "",
+          id: "",
+        },
+        {
+          country: "",
+          city: "",
+          date: "20th of August",
+          time: "",
+          note: "",
+          id: "",
+        },
       ],
     },
   });
@@ -31,10 +54,10 @@ function Core() {
   });
 
   useEffect(() => {
-    if (session?.user?.email) {
+    if (sessionEmail && !hasFetchedRef.current) {
       getTrips();
     }
-  }, [session]);
+  }, [sessionEmail]);
 
   useEffect(() => {
     setWidth(window.innerWidth);
@@ -72,7 +95,7 @@ function Core() {
       if (isUpdate) {
         const response = await axios.put("/api/trips/trip", {
           ...data,
-          email: session?.user?.email,
+          email: sessionEmail,
         });
         const updatedCard = data.cards.map((card, index) => ({
           ...card,
@@ -83,7 +106,7 @@ function Core() {
       } else {
         const response = await axios.post("/api/trips/trip", {
           ...data,
-          email: session?.user?.email,
+          email: sessionEmail,
         });
         const updatedCards = data.cards.map((card, index) => ({
           ...card,
@@ -102,8 +125,10 @@ function Core() {
 
   const getTrips = async () => {
     try {
-      const response = await axios.get("/api/trips/trip?email=" + session?.user?.email);
-      const trips = response.data.data;
+      const response = await axios.get(`/api/trips/trip?email=${sessionEmail}`);
+      const trips = response.data?.data;
+      if (trips && trips?.length === 0) return;
+
       const cards = trips.map((trip) => ({
         country: trip.country,
         city: trip.city,
@@ -112,12 +137,15 @@ function Core() {
         note: trip.note,
         id: trip._id,
       }));
+
+      if (cards?.length === 0) return;
       methods.reset({ cards });
+      hasFetchedRef.current = true;
     } catch (error) {
       console.error(error);
       toast.error("An error occurred. Please try again.");
     }
-  }
+  };
 
   const onSubmit = (data) => {
     const hasIds = data.cards.some((card) => card.id);
@@ -149,7 +177,16 @@ function Core() {
           <div className="flex justify-center mb-5">
             <button
               type="button"
-              onClick={() => append({ country: "", city: "", date: "", time: "", note: "", id: "" })}
+              onClick={() =>
+                append({
+                  country: "",
+                  city: "",
+                  date: "",
+                  time: "",
+                  note: "",
+                  id: "",
+                })
+              }
               className="btn mr-2 btn-md btn-active text-white"
             >
               Add New Card
