@@ -78,12 +78,13 @@ export default async function handler(req, res) {
       }
     case "DELETE":
       try {
-        const trip = await Trip.findByIdAndDelete(req.query);
+        const trip = await Trip.find({ _id: req.query.id });
         if (!trip) {
           return res
             .status(404)
             .json({ success: false, message: "Trip not found" });
         }
+        await Trip.deleteOne({ _id: req.query.id });
         return res.status(200).json({
           success: true,
           message: "Trip deleted successfully",

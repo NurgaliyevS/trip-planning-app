@@ -10,6 +10,7 @@ function Core() {
   const [width, setWidth] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
   const modalRef = useRef(null);
 
   const { data: session } = useSession();
@@ -125,8 +126,10 @@ function Core() {
 
   const getTrips = async () => {
     try {
+      setIsLoadingDelete(true);
       const response = await axios.get(`/api/trips/trip?email=${sessionEmail}`);
       const trips = response.data?.data;
+
       if (trips && trips?.length === 0) return;
 
       const cards = trips.map((trip) => ({
@@ -144,6 +147,21 @@ function Core() {
     } catch (error) {
       console.error(error);
       toast.error("An error occurred. Please try again.");
+    } finally {
+      setIsLoadingDelete(false);
+    }
+  };
+
+  const deleteTrip = async (id) => {
+    try {
+      const response = await axios.delete(`/api/trips/trip?id=${id}`);
+      if (response.data?.success || response.data?.message === "Trip not found") {
+        toast.success("Trip deleted successfully!");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred. Please try again.");
+    } finally {
     }
   };
 
@@ -170,6 +188,17 @@ function Core() {
     handleCloseModal();
   };
 
+  const handleRemoveLastCard = () => {
+    if (fields.length > 1) {
+      const getValues = methods.getValues();
+      const lastCardId = getValues.cards[getValues.cards.length - 1].id;
+      remove(fields.length - 1);
+      if (lastCardId) {
+        deleteTrip(lastCardId);
+      }
+    }
+  };
+
   return (
     <>
       <FormProvider {...methods}>
@@ -193,9 +222,9 @@ function Core() {
             </button>
             <button
               type="button"
-              onClick={() => fields.length > 1 && remove(fields.length - 1)}
+              onClick={handleRemoveLastCard}
               className="btn btn-error text-white btn-md"
-              disabled={fields.length === 1 && fields[0].country === ""}
+              disabled={fields.length === 1 || isLoadingDelete}
             >
               Remove Last Card
             </button>
