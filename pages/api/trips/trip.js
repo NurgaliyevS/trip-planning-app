@@ -9,10 +9,13 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const trips = await Trip.find();
-        return res
-          .status(200)
-          .json({ success: true, message: "Trips found", data: trips });
+        const email = req?.query?.email;
+        const trips = await Trip.find({ userEmail: email });
+        return res.status(200).json({
+          success: true,
+          message: "Trips retrieved successfully",
+          data: trips,
+        });
       } catch (error) {
         return res
           .status(500)
@@ -63,7 +66,7 @@ export default async function handler(req, res) {
         });
 
         const results = await Promise.all(updatePromises);
-        const successfulUpdates = results.filter(result => result !== null);
+        const successfulUpdates = results.filter((result) => result !== null);
 
         return res.status(200).json({
           success: true,

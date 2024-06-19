@@ -12,6 +12,60 @@ function Core() {
   const [isLoading, setIsLoading] = useState(false);
   const modalRef = useRef(null);
 
+  const { data: session } = useSession();
+  
+  const methods = useForm({
+    defaultValues: {
+      cards: [
+        { country: "", city: "", date: "1st of August", time: "", note: "", id: "" },
+        { country: "", city: "", date: "5th of August", time: "", note: "", id: "" },
+        { country: "", city: "", date: "20th of August", time: "", note: "", id: "" },
+      ],
+    },
+  });
+
+  const { handleSubmit, control } = methods;
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "cards",
+  });
+
+  useEffect(() => {
+    if (session?.user?.email) {
+      getTrips();
+    }
+  }, [session]);
+
+  useEffect(() => {
+    setWidth(window.innerWidth);
+    const handleResize = () => setWidth(window.innerWidth);
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    const modalElement = modalRef.current;
+    const handleClose = () => setShowModal(false);
+
+    if (showModal && modalElement) {
+      modalElement.showModal();
+    }
+
+    if (modalElement) {
+      modalElement.addEventListener("close", handleClose);
+    }
+
+    return () => {
+      if (modalElement) {
+        modalElement.removeEventListener("close", handleClose);
+      }
+    };
+  }, [showModal]);
+
   const saveTrips = async (data, isUpdate = false) => {
     try {
       setIsLoading(true);
@@ -46,34 +100,24 @@ function Core() {
     }
   };
 
-  useEffect(() => {
-    setWidth(window.innerWidth);
-    const handleResize = () => setWidth(window.innerWidth);
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  const { data: session } = useSession();
-
-  const methods = useForm({
-    defaultValues: {
-      cards: [
-        { country: "", city: "", date: "1st of August", time: "", note: "", id: "" },
-        { country: "", city: "", date: "5th of August", time: "", note: "", id: "" },
-        { country: "", city: "", date: "20th of August", time: "", note: "", id: "" },
-      ],
-    },
-  });
-
-  const { handleSubmit, control } = methods;
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "cards",
-  });
+  const getTrips = async () => {
+    try {
+      const response = await axios.get("/api/trips/trip?email=" + session?.user?.email);
+      const trips = response.data.data;
+      const cards = trips.map((trip) => ({
+        country: trip.country,
+        city: trip.city,
+        date: trip.date,
+        time: trip.time,
+        note: trip.note,
+        id: trip._id,
+      }));
+      methods.reset({ cards });
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred. Please try again.");
+    }
+  }
 
   const onSubmit = (data) => {
     const hasIds = data.cards.some((card) => card.id);
@@ -85,25 +129,6 @@ function Core() {
       saveTrips(data, hasIds);
     }
   };
-
-  useEffect(() => {
-    const modalElement = modalRef.current;
-    const handleClose = () => setShowModal(false);
-
-    if (showModal && modalElement) {
-      modalElement.showModal();
-    }
-
-    if (modalElement) {
-      modalElement.addEventListener("close", handleClose);
-    }
-
-    return () => {
-      if (modalElement) {
-        modalElement.removeEventListener("close", handleClose);
-      }
-    };
-  }, [showModal]);
 
   const handleCloseModal = () => {
     setShowModal(false);
