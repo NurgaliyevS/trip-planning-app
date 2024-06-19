@@ -28,46 +28,62 @@ function Card({ index, totalSteps, register }) {
       </span>
       <div className="card bg-white border border-gray-200 max-w-64 shadow-xl">
         <div className="card-body gap-6">
-          <label className="input input-bordered flex items-center gap-2">
-            Country:
+          <div className="flex flex-col gap-2">
+            <label htmlFor={`country${index}`} className="label-text">
+              Country
+            </label>
             <input
+              id={`country${index}`}
               {...register(`cards[${index - 1}].country`)}
               type="text"
-              className="grow"
+              className="input input-bordered grow"
               placeholder="USA"
+              style={{ wordWrap: 'break-word', whiteSpace: 'normal' }}
             />
-          </label>
+          </div>
 
-          <label className="input input-bordered flex items-center gap-2">
-            City:
+          <div className="flex flex-col gap-2">
+            <label htmlFor={`city${index}`} className="label-text">
+              City
+            </label>
             <input
+              id={`city${index}`}
               {...register(`cards[${index - 1}].city`)}
               type="text"
-              className="grow"
+              className="input input-bordered grow"
               placeholder="LA"
+              style={{ wordWrap: 'break-word', whiteSpace: 'normal' }}
             />
-          </label>
+          </div>
 
-          <label className="input input-bordered flex items-center gap-2">
-            Date:
+          <div className="flex flex-col gap-2">
+            <label htmlFor={`date${index}`} className="label-text">
+              Date
+            </label>
             <input
+              id={`date${index}`}
               {...register(`cards[${index - 1}].date`)}
               type="text"
-              className="grow"
-              defaultValue={"1st of August"}
-              placeholder={"1st of August"}
+              className="input input-bordered grow"
+              defaultValue="1st of August"
+              placeholder="1st of August"
+              style={{ wordWrap: 'break-word', whiteSpace: 'normal' }}
             />
-          </label>
+          </div>
 
-          <label className="input input-bordered flex items-center gap-2">
-            Time:
+          <div className="flex flex-col gap-2">
+            <label htmlFor={`time${index}`} className="label-text">
+              Time
+            </label>
             <input
+              id={`time${index}`}
               {...register(`cards[${index - 1}].time`)}
               type="text"
-              className="grow"
+              className="input input-bordered grow"
               placeholder="5:30 pm"
+              style={{ wordWrap: 'break-word', whiteSpace: 'normal' }}
             />
-          </label>
+          </div>
 
           <div className="divider"></div>
 
@@ -76,6 +92,7 @@ function Card({ index, totalSteps, register }) {
             {...register(`cards[${index - 1}].note`)}
             className="textarea textarea-bordered min-h-min"
             placeholder="Note: Hotel Reservation at 9pm"
+            rows="3"
           ></textarea>
         </div>
       </div>
