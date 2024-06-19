@@ -1,6 +1,7 @@
 import BigPlane from "@/public/BigPlane";
-import { useEffect, Fragment } from "react";
+import { useEffect, Fragment, useState, useRef } from "react";
 import { useForm, FormProvider, useFieldArray } from "react-hook-form";
+import { useSession } from "next-auth/react";
 
 function Card({ index, totalSteps, register }) {
   useEffect(() => {
@@ -101,6 +102,11 @@ function Card({ index, totalSteps, register }) {
 }
 
 function Core() {
+  const [showModal, setShowModal] = useState(false);
+  const modalRef = useRef(null);
+
+  const { data: session } = useSession();
+
   const methods = useForm({
     defaultValues: {
       cards: [
@@ -109,7 +115,7 @@ function Core() {
         {
           country: "",
           city: "",
-          date: "20th of the August",
+          date: "20th of August",
           time: "",
           note: "",
         },
@@ -125,62 +131,104 @@ function Core() {
 
   const onSubmit = (data) => {
     console.log(data);
+    if (!session) {
+      setShowModal(true);
+    }
+  };
+
+  useEffect(() => {
+    const modalElement = modalRef.current;
+    const handleClose = () => setShowModal(false);
+
+    if (showModal && modalElement) {
+      modalElement.showModal();
+    }
+
+    if (modalElement) {
+      modalElement.addEventListener('close', handleClose);
+    }
+
+    return () => {
+      if (modalElement) {
+        modalElement.removeEventListener('close', handleClose);
+      }
+    };
+  }, [showModal]);
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    if (modalRef.current) {
+      modalRef.current.close();
+    }
   };
 
   return (
-    <FormProvider {...methods}>
-      <section className="max-w-5xl mx-auto px-8 py-16 md:py-32 min-h-screen">
-        <div className="flex justify-center mb-5">
-          <button
-            type="button"
-            onClick={() => append({})}
-            className="btn mr-2 btn-md btn-active text-white"
-          >
-            Add New Card
-          </button>
-          <button
-            type="button"
-            onClick={() => fields.length > 1 && remove(fields.length - 1)}
-            className="btn btn-error text-white btn-md"
-            disabled={fields.length === 1 && fields[0].country === ""}
-          >
-            Remove Last Card
-          </button>
-        </div>
-
-        <div className="flex flex-wrap gap-5 mb-10 items-center justify-center lg:justify-start">
-          {fields.map((field, index) => {
-            return (
-              <Fragment key={field.id}>
-                <div className="flex flex-col items-center justify-between">
-                  <Card
-                    index={index + 1}
-                    totalSteps={fields.length}
-                    register={methods.register}
-                  />
-                </div>
-                {index !== fields.length - 1 && (
-                  <div className="flex items-center justify-center">
-                    {index % 3 !== 2 && <BigPlane />}
-                  </div>
-                )}
-              </Fragment>
-            );
-          })}
-        </div>
-
-        <div className="flex justify-center mt-10">
-          <form onSubmit={handleSubmit(onSubmit)}>
+    <>
+      <FormProvider {...methods}>
+        <section className="max-w-5xl mx-auto px-8 py-16 md:py-32 min-h-screen">
+          <div className="flex justify-center mb-5">
             <button
-              type="submit"
-              className="btn btn-success btn-md bg-green-500 text-white btn-wide"
+              type="button"
+              onClick={() => append({})}
+              className="btn mr-2 btn-md btn-active text-white"
             >
-              Submit
+              Add New Card
             </button>
-          </form>
+            <button
+              type="button"
+              onClick={() => fields.length > 1 && remove(fields.length - 1)}
+              className="btn btn-error text-white btn-md"
+              disabled={fields.length === 1 && fields[0].country === ""}
+            >
+              Remove Last Card
+            </button>
+          </div>
+
+          <div className="flex flex-wrap gap-5 mb-10 items-center justify-center lg:justify-start">
+            {fields.map((field, index) => {
+              return (
+                <Fragment key={field.id}>
+                  <div className="flex flex-col items-center justify-between">
+                    <Card
+                      index={index + 1}
+                      totalSteps={fields.length}
+                      register={methods.register}
+                    />
+                  </div>
+                  {index !== fields.length - 1 && (
+                    <div className="flex items-center justify-center">
+                      {index % 3 !== 2 && <BigPlane />}
+                    </div>
+                  )}
+                </Fragment>
+              );
+            })}
+          </div>
+
+          <div className="flex justify-center mt-10">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <button
+                type="submit"
+                className="btn btn-success btn-md bg-green-500 text-white btn-wide"
+              >
+                Submit
+              </button>
+            </form>
+          </div>
+        </section>
+      </FormProvider>
+      <dialog ref={modalRef} className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">To save all data</h3>
+          <p className="py-4">You need to login</p>
+          <div className="modal-action">
+            <button className="btn" onClick={handleCloseModal}>
+              Close
+            </button>
+          </div>
         </div>
-      </section>
-    </FormProvider>
+      </dialog>
+    </>
   );
 }
 
