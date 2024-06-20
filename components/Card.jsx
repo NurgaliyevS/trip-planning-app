@@ -62,10 +62,8 @@ function Card({ index, totalSteps, register }) {
             <input
               id={`date${index}`}
               {...register(`cards[${index - 1}].date`)}
-              type="text"
+              type="date"
               className="input input-bordered grow"
-              defaultValue="1st of August"
-              placeholder="1st of August"
               style={{ wordWrap: "break-word", whiteSpace: "normal" }}
             />
           </div>
