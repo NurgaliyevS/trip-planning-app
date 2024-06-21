@@ -155,7 +155,10 @@ function Core() {
   const deleteTrip = async (id) => {
     try {
       const response = await axios.delete(`/api/trips/trip?id=${id}`);
-      if (response.data?.success || response.data?.message === "Trip not found") {
+      if (
+        response.data?.success ||
+        response.data?.message === "Trip not found"
+      ) {
         toast.success("Trip deleted successfully!");
       }
     } catch (error) {
@@ -203,6 +206,9 @@ function Core() {
     <>
       <FormProvider {...methods}>
         <section className="max-w-5xl mx-auto px-8 py-16 md:py-32 min-h-screen">
+          <h2 class="text-center font-extrabold text-4xl md:text-5xl tracking-tight mb-12 md:mb-20">
+            Let's your jouney begin!
+          </h2>
           <div className="flex justify-center mb-5">
             <button
               type="button"
@@ -230,7 +236,7 @@ function Core() {
             </button>
           </div>
 
-          <div className="flex flex-wrap gap-5 mb-10 items-center justify-center lg:justify-start">
+          <div className={`flex flex-wrap gap-5 mb-10 items-center justify-center lg:justify-start ${fields?.length === 1 ? "lg:justify-center": ""}`}>
             {fields.map((field, index) => (
               <Fragment key={field.id}>
                 {width >= 724 && (
