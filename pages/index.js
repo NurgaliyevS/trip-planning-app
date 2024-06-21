@@ -5,6 +5,7 @@ import Ads from "@/components/Ads";
 import Core from "@/components/Core";
 import Prices from "@/components/Prices";
 import FAQ from "@/components/FAQ";
+import Footer from "@/components/Footer";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
@@ -19,6 +20,7 @@ export default function Home() {
       <Core />
       <Prices />
       <FAQ />
+      <Footer />
     </main>
   );
 }
