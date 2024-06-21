@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { buyProduct } from "./buyProduct";
+
 function FAQ() {
   return (
     <section className="bg-slate-100 overflow-hidden" id="faq">
@@ -133,6 +136,17 @@ function FAQ() {
               </details>
             </li>
           </ul>
+        </div>
+        <div className="space-y-4 md:space-y-6 max-w-md mx-auto mt-16 md:mt-24">
+          <Link
+            href="#buy"
+            role="button"
+            className="btn btn-error group btn-block"
+            title="BUY NOW"
+            onClick={buyProduct}
+          >
+            BUY NOW
+          </Link>
         </div>
       </div>
     </section>
