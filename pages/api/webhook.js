@@ -29,6 +29,10 @@ export default async function handler(req, res) {
       const body = JSON.parse(rawBody);
       const eventType = req.headers["x-event-name"];
 
+      console.log(body, 'body');
+      console.log(body.data, 'data');
+      console.log(body.data.attributes, 'attributes');
+
       // Handle the event
       if (eventType === "order_created") {
         const isSuccessful = body.data.attributes.status === "paid";
