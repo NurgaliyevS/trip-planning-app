@@ -207,7 +207,7 @@ function Core() {
       <FormProvider {...methods}>
         <section className="max-w-5xl mx-auto px-8 py-16 md:py-32 min-h-screen">
           <h2 class="text-center font-extrabold text-4xl md:text-5xl tracking-tight mb-12 md:mb-20">
-            Let's your jouney begin!
+            Let's your journey begin!
           </h2>
           <div className="flex justify-center mb-5">
             <button
