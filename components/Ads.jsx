@@ -226,13 +226,9 @@ function Ads() {
           </div>
 
           <div className="text-base leading-relaxed space-y-2 max-w-md mx-auto text-center">
-            <p className="px-1.5">
-              I don’t want to spend hours planning my trips.
-              <br />I also don’t want to forget any travel dates or details.
-            </p>
-            <p>
-              TripPlanss solved this for me perfectly. <br /> The site is simple
-              to use and makes planning so easy.
+            <p className="leading-relaxed">
+              I don’t want to spend hours planning my trips. <br /> The app is simple to use and makes
+              planning so easy.
             </p>
           </div>
 
