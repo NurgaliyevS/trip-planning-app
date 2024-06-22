@@ -29,6 +29,8 @@ export default async function handler(req, res) {
       const body = JSON.parse(rawBody);
       const eventType = req.headers["x-event-name"];
 
+      console.log(body, 'body');
+
       // Handle the event
       if (eventType === "order_created") {
         const isSuccessful = body.data.attributes.status === "paid";
@@ -37,6 +39,11 @@ export default async function handler(req, res) {
         const variantId = body.data.attributes.first_order_item.variant_id;
         const userIdAuthorized = body?.meta?.custom_data?.user_id;
         const emailAuthorized = body?.meta?.custom_data?.email;
+
+        console.log(userStatus, 'userStatus');
+        console.log(emailAuthorized, 'emailAuthorized');
+        console.log(userStatus, 'userStatus');
+        console.log(isSuccessful ? userStatus | "paid" : "unpaid", 'logical isSuccessful ? userStatus | "paid" : "unpaid"')
 
         await connectMongoDB();
 
