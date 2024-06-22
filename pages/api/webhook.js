@@ -42,8 +42,8 @@ export default async function handler(req, res) {
 
         console.log(userStatus, 'userStatus');
         console.log(emailAuthorized, 'emailAuthorized');
-        console.log(userStatus, 'userStatus');
-        console.log(isSuccessful ? userStatus | "paid" : "unpaid", 'logical isSuccessful ? userStatus | "paid" : "unpaid"')
+        console.log(isSuccessful, 'isSuccessful');
+        console.log(isSuccessful ? userStatus || "paid" : "unpaid", 'logical isSuccessful ? userStatus || "paid" : "unpaid"')
 
         await connectMongoDB();
 
@@ -52,7 +52,7 @@ export default async function handler(req, res) {
             email: emailAuthorized,
           });
           if (email) {
-            email.user_status = isSuccessful ? userStatus | "paid" : "unpaid";
+            email.user_status = isSuccessful ? userStatus || "paid" : "unpaid";
             email.receipt_link = receiptLink;
             email.variant_id = variantId;
             await email.save();
@@ -62,7 +62,7 @@ export default async function handler(req, res) {
             const newUser = new User({
               name: body.data.attributes.user_name,
               email: emailAuthorized,
-              user_status: isSuccessful ? userStatus | "paid" : "unpaid",
+              user_status: isSuccessful ? userStatus || "paid" : "unpaid",
               receipt_link: receiptLink,
               variant_id: variantId,
             });
@@ -78,7 +78,7 @@ export default async function handler(req, res) {
         });
 
         if (user) {
-          user.user_status = isSuccessful ? userStatus | "paid" : "unpaid";
+          user.user_status = isSuccessful ? userStatus || "paid" : "unpaid";
           user.receipt_link = receiptLink;
           user.variant_id = variantId;
           await user.save();
@@ -87,7 +87,7 @@ export default async function handler(req, res) {
           const newUser = new User({
             name: body.data.attributes.user_name,
             email: body.data.attributes.user_email,
-            user_status: isSuccessful ? userStatus | "paid" : "unpaid",
+            user_status: isSuccessful ? userStatus || "paid" : "unpaid",
             receipt_link: receiptLink,
             variant_id: variantId,
           });
