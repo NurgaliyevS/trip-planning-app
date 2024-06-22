@@ -1,5 +1,3 @@
-// pages/api/auth/[...nextauth].js
-
 import NextAuth from "next-auth";
 import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
@@ -22,37 +20,35 @@ export default NextAuth({
     }),
   ],
   callbacks: {
-    async signIn(user) {
+    async signIn({ user, account }) {
       try {
         await connectMongoDB();
 
-        const email = user.user.email;
-
+        const email = user.email;
         let existingUser = await User.findOne({ email });
 
-        if (existingUser && !existingUser?.access_token) {
-          await User.updateOne(
-            { email },
-            {
-              expires: user?.account?.expires_at,
-              access_token: user?.account?.access_token,
-              provider: user?.account?.provider,
-              id_token: user?.account?.id_token,
-              image: user?.user?.image,
-            }
-          );
-        }
-
-        if (!existingUser) {
-          // If user does not exist, create a new user in MongoDB
+        if (existingUser) {
+          if (!existingUser.access_token) {
+            await User.updateOne(
+              { email },
+              {
+                expires: account.expires_at,
+                access_token: account.access_token,
+                provider: account.provider,
+                id_token: account.id_token,
+                image: user.image,
+              }
+            );
+          }
+        } else {
           const newUser = new User({
-            name: user?.user?.name,
-            email: user?.user?.email,
-            image: user?.user?.image,
-            expires: user?.account?.expires_at,
-            access_token: user?.account?.access_token,
-            provider: user?.account?.provider,
-            id_token: user?.account?.id_token,
+            name: user.name,
+            email: user.email,
+            image: user.image,
+            expires: account.expires_at,
+            access_token: account.access_token,
+            provider: account.provider,
+            id_token: account.id_token,
             user_status: "unpaid",
           });
 
@@ -65,14 +61,34 @@ export default NextAuth({
 
       return true;
     },
+    async session({ session, token }) {
+      try {
+        await connectMongoDB();
+        const user = await User.findOne({ email: session.user.email });
+
+        if (user) {
+          session.user.id = user.id;
+          session.user.user_status = user.user_status;
+        }
+      } catch (error) {
+        console.error("Error retrieving user from MongoDB:", error);
+      }
+
+      return session;
+    },
+    async jwt({ token, user, account }) {
+      if (account && user) {
+        token.accessToken = account.access_token;
+        token.idToken = account.id_token;
+        token.expires = account.expires_at;
+      }
+
+      return token;
+    },
   },
   session: {
-    jwt: true, // Use JSON Web Tokens for session instead of default cookies
+    strategy: "jwt",
   },
-  // add logo here
-  // theme: {
-
-  // },
   secret: process.env.NEXTAUTH_SECRET,
   adapter: MongoDBAdapter(clientPromise),
 });
