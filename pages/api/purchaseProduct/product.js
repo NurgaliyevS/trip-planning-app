@@ -20,6 +20,7 @@ export default async function handler(req, res) {
             custom: {
               user_id: "123",
             },
+            discount_code: "LAUNCH"
           },
         },
         relationships: {
