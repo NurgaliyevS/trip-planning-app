@@ -78,19 +78,10 @@ function Main() {
           <div className="-space-x-5 avatar-group justy-start">
             <div className="avatar w-12 h-12">
               <Image
-                src="/Adarsh.webp"
+                src="/Desmond.webp"
                 width={50}
                 height={50}
-                alt="Adarsh"
-                priority
-              />
-            </div>
-            <div className="avatar w-12 h-12">
-              <Image
-                src="/Cristian.webp"
-                width={50}
-                height={50}
-                alt="Cristian"
+                alt="Desmond"
                 priority
               />
             </div>
@@ -100,6 +91,15 @@ function Main() {
                 width={50}
                 height={50}
                 alt="Hossein"
+                priority
+              />
+            </div>
+            <div className="avatar w-12 h-12">
+              <Image
+                src="/Cristian.webp"
+                width={50}
+                height={50}
+                alt="Cristian"
                 priority
               />
             </div>

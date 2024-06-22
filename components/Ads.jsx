@@ -238,16 +238,16 @@ function Ads() {
 
           <div className="flex justify-center items-center gap-3 md:gap-4">
             <Image
-              src={"/Desmond.webp"}
+              src={"/Adarsh.webp"}
               width={48}
               height={48}
-              alt="Desmond"
+              alt="Adarsh"
               className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover"
             />
             <div>
-              <p class="font-semibold">Desmond</p>
+              <p class="font-semibold">Adarsh</p>
               <p class="text-base-content-secondary text-sm">
-                3.5K followers on 𝕏
+                1.4K followers on 𝕏
               </p>
             </div>
           </div>
