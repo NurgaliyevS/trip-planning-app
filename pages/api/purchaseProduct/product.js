@@ -32,15 +32,12 @@ export default async function handler(req, res) {
           variant: {
             data: {
               type: "variants",
-              id: request.productId.toString(),
+              id: request?.variantId || process.env.LEMON_SQEEZY_VARIANT_PREMIUM.toString(),
             },
           },
         },
       },
     });
-
-    console.log(response.data, "data");
-    console.log(response.data.data.attributes.checkout_data, "checkout_data");
 
     return res.status(200).json({
       success: true,

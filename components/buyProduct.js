@@ -2,11 +2,17 @@
 
 import axios from "axios";
 
-export async function buyProduct() {
+export async function buyProduct(variantId) {
   try {
-    const response = await axios.post("/api/purchaseProduct/product", {
-      productId: "417018",
-    });
+    const payload = {
+      productId: "296822",
+    };
+
+    if (typeof variantId === 'string') {
+      payload.variantId = variantId;
+    }
+
+    const response = await axios.post("/api/purchaseProduct/product", payload);
 
     const url = response.data?.data;
 

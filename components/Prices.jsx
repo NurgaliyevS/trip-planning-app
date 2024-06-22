@@ -96,7 +96,7 @@ function Prices() {
                   role="button"
                   className="btn btn-error group btn-block"
                   title="BUY NOW"
-                  onClick={buyProduct}
+                  onClick={() => {buyProduct("425252")}}
                 >
                   BUY NOW
                 </Link>
@@ -184,7 +184,7 @@ function Prices() {
                   role="button"
                   className="btn btn-error group btn-block"
                   title="BUY NOW"
-                  onClick={buyProduct}
+                  onClick={() => {buyProduct("425238")}}
                 >
                   BUY NOW
                 </Link>
