@@ -2,7 +2,7 @@
 
 import axios from "axios";
 
-export async function buyProduct(variantId) {
+export async function buyProduct(email, userId, variantId) {
   try {
     const payload = {
       productId: "296822",
@@ -10,6 +10,14 @@ export async function buyProduct(variantId) {
 
     if (typeof variantId === 'string') {
       payload.variantId = variantId;
+    }
+
+    if (typeof email === 'string') {
+      payload.email = email;
+    }
+
+    if (typeof userId === 'string') {
+      payload.userId = userId;
     }
 
     const response = await axios.post("/api/purchaseProduct/product", payload);

@@ -49,7 +49,9 @@ function Navbar() {
           role="button"
           className="btn btn-error group btn-wide"
           title="BUY NOW"
-          onClick={buyProduct}
+          onClick={() => {
+            buyProduct(session?.user?.email, session?.user?.id);
+          }}
         >
           BUY NOW
         </Link>
@@ -122,7 +124,9 @@ function Navbar() {
             role="button"
             className="btn btn-error group btn-wide"
             title="BUY NOW"
-            onClick={buyProduct}
+            onClick={() => {
+              buyProduct(session?.user?.email, session?.user?.id);
+            }}
           >
             BUY NOW
           </Link>

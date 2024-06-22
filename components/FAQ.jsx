@@ -1,7 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import { buyProduct } from "./buyProduct";
+import { useSession } from "next-auth/react";
 
 function FAQ() {
+  const { data: session } = useSession();
   return (
     <section className="bg-slate-100 overflow-hidden" id="faq">
       <div className="py-24 px-8 max-w-7xl mx-auto">
@@ -143,7 +147,9 @@ function FAQ() {
             role="button"
             className="btn btn-error group btn-block"
             title="BUY NOW"
-            onClick={buyProduct}
+            onClick={() => {
+              buyProduct(session?.user?.email, session?.user?.id);
+            }}
           >
             BUY NOW
           </Link>

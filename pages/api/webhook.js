@@ -29,15 +29,41 @@ export default async function handler(req, res) {
       const body = JSON.parse(rawBody);
       const eventType = req.headers["x-event-name"];
 
-      console.log(body, 'body');
-      console.log(body.data, 'data');
-      console.log(body.data.attributes, 'attributes');
-
       // Handle the event
       if (eventType === "order_created") {
         const isSuccessful = body.data.attributes.status === "paid";
+        const userStatus = body.data.attributes.first_order_item.variant_name;
+        const receiptLink = body.data.attributes.urls.receipt;
+        const variantId = body.data.attributes.first_order_item.variant_id;
+        const userIdAuthorized = body?.meta?.custom_data?.user_id;
+        const emailAuthorized = body?.meta?.custom_data?.email;
 
         await connectMongoDB();
+
+        if (emailAuthorized && typeof emailAuthorized === 'string' && emailAuthorized.length > 3) {
+          const email = await User.findOne({
+            email: emailAuthorized,
+          });
+          if (email) {
+            email.user_status = isSuccessful ? userStatus | "paid" : "unpaid";
+            email.receipt_link = receiptLink;
+            email.variant_id = variantId;
+            await email.save();
+            res.status(200).json({ message: "Webhook received" });
+            return;
+          } else {
+            const newUser = new User({
+              name: body.data.attributes.user_name,
+              email: emailAuthorized,
+              user_status: isSuccessful ? userStatus | "paid" : "unpaid",
+              receipt_link: receiptLink,
+              variant_id: variantId,
+            });
+            await newUser.save();
+            res.status(200).json({ message: "Webhook received" });
+            return;
+          }
+        }
 
         // find by email
         const user = await User.findOne({
@@ -45,14 +71,18 @@ export default async function handler(req, res) {
         });
 
         if (user) {
-          user.user_status = isSuccessful ? "paid" : "unpaid";
+          user.user_status = isSuccessful ? userStatus | "paid" : "unpaid";
+          user.receipt_link = receiptLink;
+          user.variant_id = variantId;
           await user.save();
         } else {
           // create new user
           const newUser = new User({
             name: body.data.attributes.user_name,
             email: body.data.attributes.user_email,
-            user_status: isSuccessful ? "paid" : "unpaid",
+            user_status: isSuccessful ? userStatus | "paid" : "unpaid",
+            receipt_link: receiptLink,
+            variant_id: variantId,
           });
           await newUser.save();
         }

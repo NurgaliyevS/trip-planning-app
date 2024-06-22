@@ -1,9 +1,13 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { buyProduct } from "./buyProduct";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 function Prices() {
+  const { data: session } = useSession();
   return (
     <section className="bg-slate-100 overflow-hidden" id="pricing">
       <div className="py-24 px-8 max-w-5xl mx-auto">
@@ -96,7 +100,9 @@ function Prices() {
                   role="button"
                   className="btn btn-error group btn-block"
                   title="BUY NOW"
-                  onClick={() => {buyProduct("425252")}}
+                  onClick={() => {
+                    buyProduct(session?.user?.email, session?.user?.id, "425252");
+                  }}
                 >
                   BUY NOW
                 </Link>
@@ -184,7 +190,9 @@ function Prices() {
                   role="button"
                   className="btn btn-error group btn-block"
                   title="BUY NOW"
-                  onClick={() => {buyProduct("425238")}}
+                  onClick={() => {
+                    buyProduct(session?.user?.email, session?.user?.id, "425238");
+                  }}
                 >
                   BUY NOW
                 </Link>

@@ -9,6 +9,8 @@ const UserSchema = new mongoose.Schema(
     access_token: String,
     provider: String,
     id_token: String,
+    receipt_link: String,
+    variant_id: String,
     user_status: { type: String, default: 'unpaid' },
   },
   { timestamps: true }

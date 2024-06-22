@@ -3,6 +3,7 @@
 import { lemonSqueezyApiInstance } from "@/utills/axios";
 
 export default async function handler(req, res) {
+
   try {
     const request = await req.body;
 
@@ -18,7 +19,8 @@ export default async function handler(req, res) {
         attributes: {
           checkout_data: {
             custom: {
-              user_id: "123",
+              user_id: request?.userId || "123",
+              email: request?.email || "123",
             },
             discount_code: "LAUNCH"
           },
