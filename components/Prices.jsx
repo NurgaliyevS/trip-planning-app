@@ -119,7 +119,7 @@ function Prices() {
                 <div class="flex flex-col justify-end mb-1 text-lg ">
                   <p class="relative">
                     <span class="absolute bg-base-content h-0.5 inset-x-0 top-[53%]"></span>
-                    <span class="text-base-content/80">$79</span>
+                    <span class="text-base-content/80">$78</span>
                   </p>
                 </div>
                 <p class="text-5xl tracking-tight font-extrabold">$39</p>
