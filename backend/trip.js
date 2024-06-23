@@ -8,6 +8,7 @@ const TripSchema = new mongoose.Schema(
     time: String,
     note: String,
     userEmail: String,
+    trip_number: Number,
   },
   { timestamps: true }
 );
