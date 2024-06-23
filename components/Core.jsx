@@ -6,7 +6,7 @@ import Card from "./Card";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-function Core() {
+function Core({ tripNumber, addNewTrip }) {
   const [width, setWidth] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -106,6 +106,7 @@ function Core() {
         const response = await axios.put("/api/trips/trip", {
           ...data,
           email: sessionEmail,
+          trip_number: tripNumber,
         });
         const updatedCard = data.cards.map((card, index) => ({
           ...card,
@@ -117,6 +118,7 @@ function Core() {
         const response = await axios.post("/api/trips/trip", {
           ...data,
           email: sessionEmail,
+          trip_number: tripNumber,
         });
         const updatedCards = data.cards.map((card, index) => ({
           ...card,
@@ -136,7 +138,9 @@ function Core() {
   const getTrips = async () => {
     try {
       setIsLoadingDelete(true);
-      const response = await axios.get(`/api/trips/trip?email=${sessionEmail}`);
+      const response = await axios.get(
+        `/api/trips/trip?email=${sessionEmail}&tripId=${tripNumber}`
+      );
       const trips = response.data?.data;
 
       if (trips && trips?.length === 0) return;
@@ -278,98 +282,99 @@ function Core() {
   return (
     <>
       <FormProvider {...methods}>
-        <section className="max-w-5xl mx-auto px-8 py-16 md:py-32 min-h-screen">
-          <h2 class="text-center font-extrabold text-4xl md:text-5xl tracking-tight mb-12 md:mb-20">
-            Let's your journey begin!
-          </h2>
-          <div className="flex justify-center mb-5">
-            <button
-              type="button"
-              onClick={checkUserStatus}
-              className="btn mr-2 btn-md btn-active text-white"
-            >
-              Add New Card
-            </button>
-            <button
-              type="button"
-              onClick={handleRemoveLastCard}
-              className="btn btn-error text-white btn-md"
-              disabled={fields.length === 1 || isLoadingDelete}
-            >
-              Remove Last Card
-            </button>
-          </div>
-
-          <div
-            className={`flex flex-wrap gap-5 mb-10 items-center justify-center lg:justify-start ${
-              fields?.length === 1 ? "lg:justify-center" : ""
-            }`}
+        <div>
+          <form
+            id={`trip-form-${tripNumber}`}
+            onSubmit={handleSubmit(onSubmit)}
           >
-            {fields.map((field, index) => (
-              <Fragment key={field.id}>
-                {width >= 724 && (
-                  <>
-                    <div className="flex flex-col items-center justify-between">
+            <div className="flex justify-center mb-5">
+              <button
+                type="button"
+                onClick={checkUserStatus}
+                className="btn mr-2 btn-md btn-active text-white"
+              >
+                Add New Card
+              </button>
+              <button
+                type="button"
+                onClick={handleRemoveLastCard}
+                className="btn btn-error text-white btn-md"
+                disabled={fields.length === 1 || isLoadingDelete}
+              >
+                Remove Last Card
+              </button>
+            </div>
+
+            <div
+              className={`flex flex-wrap gap-5 mb-10 items-center justify-center lg:justify-start ${
+                fields?.length === 1 ? "lg:justify-center" : ""
+              }`}
+            >
+              {fields.map((field, index) => (
+                <Fragment key={field.id}>
+                  {width >= 724 && (
+                    <>
+                      <div className="flex flex-col items-center justify-between">
+                        <Card
+                          index={index + 1}
+                          totalSteps={fields.length}
+                          register={methods.register}
+                        />
+                      </div>
+                      {index !== fields.length - 1 && (
+                        <div className="flex items-center justify-center">
+                          {index % 3 !== 2 && <BigPlane />}
+                        </div>
+                      )}
+                    </>
+                  )}
+                  {width < 724 && (
+                    <div className="flex flex-col items-center justify-between gap-7">
                       <Card
                         index={index + 1}
                         totalSteps={fields.length}
                         register={methods.register}
                       />
+                      {index !== fields.length - 1 && <BigPlane />}
                     </div>
-                    {index !== fields.length - 1 && (
-                      <div className="flex items-center justify-center">
-                        {index % 3 !== 2 && <BigPlane />}
-                      </div>
-                    )}
-                  </>
-                )}
-                {width < 724 && (
-                  <div className="flex flex-col items-center justify-between gap-7">
-                    <Card
-                      index={index + 1}
-                      totalSteps={fields.length}
-                      register={methods.register}
-                    />
-                    {index !== fields.length - 1 && <BigPlane />}
-                  </div>
-                )}
-              </Fragment>
-            ))}
-          </div>
+                  )}
+                </Fragment>
+              ))}
+            </div>
 
-          <div className="flex justify-center mt-10 flex-col items-center gap-10">
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="flex justify-center mt-10 flex-col items-center gap-10 relative">
               <button
                 type="submit"
-                className="btn btn-success btn-md bg-green-500 text-white btn-wide"
+                className="btn btn-success btn-md bg-green-500 text-white btn-wide z-10"
                 disabled={isLoading}
               >
                 Submit
               </button>
-            </form>
-            <div className="relative">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-                <span class="badge text-xs text-white font-medium border-0 bg-emerald-500 whitespace-nowrap">
-                  Premium ⭐️
-                </span>
-              </div>
-              <button
-                className={`btn btn-md btn-secondary btn-wide text-center ${
-                  userStatus?.length && userStatus !== "unpaid"
-                    ? "btn-primary"
-                    : "btn-disabled"
-                }`}
-              >
-                Add New Trip
-              </button>
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-20">
-                <span className="badge text-xs text-white font-medium border-0 bg-emerald-500 whitespace-nowrap">
-                  VIP 🚀
-                </span>
+              <div className="relative">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+                  <span class="badge text-xs text-white font-medium border-0 bg-emerald-500 whitespace-nowrap">
+                    Premium ⭐️
+                  </span>
+                </div>
+                <button
+                  className={`btn btn-md btn-secondary btn-wide text-center ${
+                    userStatus?.length && userStatus !== "unpaid"
+                      ? "btn-primary"
+                      : "btn-disabled"
+                  }`}
+                  onClick={addNewTrip}
+                >
+                  Add New Trip
+                </button>
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-20">
+                  <span className="badge text-xs text-white font-medium border-0 bg-emerald-500 whitespace-nowrap">
+                    VIP 🚀
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </form>
+        </div>
       </FormProvider>
       <dialog ref={modalRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">

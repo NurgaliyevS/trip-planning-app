@@ -10,7 +10,9 @@ export default async function handler(req, res) {
     case "GET":
       try {
         const email = req?.query?.email;
-        const trips = await Trip.find({ userEmail: email });
+        const tripId = req?.query?.tripId;
+
+        const trips = await Trip.find({ userEmail: email, trip_number: tripId });
         return res.status(200).json({
           success: true,
           message: "Trips retrieved successfully",
@@ -27,6 +29,7 @@ export default async function handler(req, res) {
           req.body.cards.map((card) => ({
             ...card,
             userEmail: req.body.email,
+            trip_number: req.body.trip_number,
           }))
         );
         return res.status(201).json({
@@ -51,6 +54,7 @@ export default async function handler(req, res) {
               trip.time = card.time;
               trip.note = card.note;
               trip.userEmail = email;
+              trip.trip_number = req.body.trip_number;
               return trip.save();
             } else {
               return null;
@@ -60,6 +64,7 @@ export default async function handler(req, res) {
             const newTrip = new Trip({
               ...card,
               userEmail: email,
+              trip_number: req.body.trip_number,
             });
             return newTrip.save();
           }
