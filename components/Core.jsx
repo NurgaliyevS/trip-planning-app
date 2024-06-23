@@ -11,10 +11,13 @@ function Core() {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+  const [userStatus, setUserStatus] = useState("");
+
   const modalRef = useRef(null);
 
   const { data: session } = useSession();
   const sessionEmail = session?.user?.email;
+  const sessionId = session?.user?.id;
   const hasFetchedRef = useRef(false);
 
   const methods = useForm({
@@ -90,6 +93,12 @@ function Core() {
     };
   }, [showModal]);
 
+  useEffect(() => {
+    if (sessionId) {
+      getUserById(sessionId);
+    }
+  }, [sessionId]);
+
   const saveTrips = async (data, isUpdate = false) => {
     try {
       setIsLoading(true);
@@ -152,6 +161,18 @@ function Core() {
     }
   };
 
+  const getUserById = async (id) => {
+    try {
+      const response = await axios.get("/api/users/user?id=" + id);
+      const user = response.data?.data;
+      if (user?.user_status) {
+        setUserStatus(user.user_status);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const deleteTrip = async (id) => {
     try {
       const response = await axios.delete(`/api/trips/trip?id=${id}`);
@@ -202,6 +223,58 @@ function Core() {
     }
   };
 
+  const handleUnpaidUser = () => {
+    if (fields?.length === 5) {
+      toast.error("Please upgrade to VIP to add more locations.");
+    } else if (fields?.length <= 4) {
+      addNewCard();
+    }
+  };
+
+  const handlePremiumUser = () => {
+    if (fields?.length === 10) {
+      toast.error("Please upgrade to VIP to add more locations.");
+    } else if (fields?.length <= 9) {
+      addNewCard();
+    }
+  };
+
+  const handleVipUser = () => {
+    if (fields?.length === 20) {
+      toast.error("You have reached the maximum limit of locations.");
+    } else if (fields?.length <= 19) {
+      addNewCard();
+    }
+  };
+
+  const addNewCard = () => {
+    append({
+      country: "",
+      city: "",
+      date: "",
+      time: "",
+      note: "",
+      id: "",
+    });
+  };
+
+  const checkUserStatus = () => {
+    if (userStatus?.length && userStatus === "unpaid") {
+      handleUnpaidUser();
+    }
+    if (userStatus?.length && userStatus === "Premium") {
+      handlePremiumUser();
+    }
+
+    if (userStatus?.length && userStatus === "VIP") {
+      handleVipUser();
+    }
+
+    if (!userStatus?.length) {
+      handleUnpaidUser();
+    }
+  };
+
   return (
     <>
       <FormProvider {...methods}>
@@ -212,16 +285,7 @@ function Core() {
           <div className="flex justify-center mb-5">
             <button
               type="button"
-              onClick={() =>
-                append({
-                  country: "",
-                  city: "",
-                  date: "",
-                  time: "",
-                  note: "",
-                  id: "",
-                })
-              }
+              onClick={checkUserStatus}
               className="btn mr-2 btn-md btn-active text-white"
             >
               Add New Card
@@ -236,7 +300,11 @@ function Core() {
             </button>
           </div>
 
-          <div className={`flex flex-wrap gap-5 mb-10 items-center justify-center lg:justify-start ${fields?.length === 1 ? "lg:justify-center": ""}`}>
+          <div
+            className={`flex flex-wrap gap-5 mb-10 items-center justify-center lg:justify-start ${
+              fields?.length === 1 ? "lg:justify-center" : ""
+            }`}
+          >
             {fields.map((field, index) => (
               <Fragment key={field.id}>
                 {width >= 724 && (
@@ -269,7 +337,7 @@ function Core() {
             ))}
           </div>
 
-          <div className="flex justify-center mt-10">
+          <div className="flex justify-center mt-10 flex-col items-center gap-10">
             <form onSubmit={handleSubmit(onSubmit)}>
               <button
                 type="submit"
@@ -279,6 +347,27 @@ function Core() {
                 Submit
               </button>
             </form>
+            <div className="relative">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+                <span class="badge text-xs text-white font-medium border-0 bg-emerald-500 whitespace-nowrap">
+                  Premium ⭐️
+                </span>
+              </div>
+              <button
+                className={`btn btn-md btn-secondary btn-wide text-center ${
+                  userStatus?.length && userStatus !== "unpaid"
+                    ? "btn-primary"
+                    : "btn-disabled"
+                }`}
+              >
+                Add New Trip
+              </button>
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-20">
+                <span className="badge text-xs text-white font-medium border-0 bg-emerald-500 whitespace-nowrap">
+                  VIP 🚀
+                </span>
+              </div>
+            </div>
           </div>
         </section>
       </FormProvider>
