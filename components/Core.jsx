@@ -6,7 +6,7 @@ import Card from "./Card";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-function Core({ tripNumber, addNewTrip }) {
+function Core({ tripNumber, addNewTrip, removeTrip, tripCount }) {
   const [width, setWidth] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -282,7 +282,7 @@ function Core({ tripNumber, addNewTrip }) {
   return (
     <>
       <FormProvider {...methods}>
-        <div>
+        <div className={`max-w-5xl mx-auto px-8 min-h-screen ${tripCount > 1 ? "pb-16" : ""} ${tripCount > 1 ? "md:pb-32" : ""}`}>
           <form
             id={`trip-form-${tripNumber}`}
             onSubmit={handleSubmit(onSubmit)}
@@ -350,27 +350,53 @@ function Core({ tripNumber, addNewTrip }) {
               >
                 Submit
               </button>
-              <div className="relative">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-                  <span className="badge text-xs text-white font-medium border-0 bg-emerald-500 whitespace-nowrap">
-                    Premium ⭐️
-                  </span>
+
+              <div className="flex gap-2">
+                <div className="relative">
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+                    <span className="badge text-xs text-white font-medium border-0 bg-emerald-500 whitespace-nowrap">
+                      Premium ⭐️
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    className={`btn btn-md btn-secondary btn-wide text-center z-10 ${
+                      userStatus?.length && userStatus !== "unpaid"
+                        ? "btn-primary"
+                        : "btn-disabled"
+                    }`}
+                    onClick={addNewTrip}
+                  >
+                    Add New Trip
+                  </button>
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-20">
+                    <span className="badge text-xs text-white font-medium border-0 bg-emerald-500 whitespace-nowrap">
+                      VIP 🚀
+                    </span>
+                  </div>
                 </div>
-                <button
-                  type="button"
-                  className={`btn btn-md btn-secondary btn-wide text-center z-10 ${
-                    userStatus?.length && userStatus !== "unpaid"
-                      ? "btn-primary"
-                      : "btn-disabled"
-                  }`}
-                  onClick={addNewTrip}
-                >
-                  Add New Trip
-                </button>
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-20">
-                  <span className="badge text-xs text-white font-medium border-0 bg-emerald-500 whitespace-nowrap">
-                    VIP 🚀
-                  </span>
+                <div className={`relative ${tripCount === 1 ? "hidden" : "block"}`}>
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+                    <span className="badge text-xs text-white font-medium border-0 bg-emerald-500 whitespace-nowrap">
+                      Premium ⭐️
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    className={`btn btn-md btn-secondary btn-wide text-center z-10 ${
+                      userStatus?.length && userStatus !== "unpaid"
+                        ? "btn-warning"
+                        : "btn-disabled"
+                    }`}
+                    onClick={removeTrip}
+                  >
+                    Remove Trip
+                  </button>
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-20">
+                    <span className="badge text-xs text-white font-medium border-0 bg-emerald-500 whitespace-nowrap">
+                      VIP 🚀
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

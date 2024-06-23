@@ -23,8 +23,16 @@ function TripPlanner() {
       toast.error("Upgrade to premium to add more trips.");
       return;
     }
-    
+
     setTripCount(tripCount + 1);
+  };
+
+  const removeTrip = () => {
+    if (tripCount === 1) {
+      toast.error("Minimum of 1 trip required.");
+      return;
+    }
+    setTripCount(tripCount - 1);
   };
 
   return (
@@ -33,9 +41,13 @@ function TripPlanner() {
         Let's your journey begin!
       </h2>
       {Array.from({ length: tripCount }).map((_, index) => (
-        <div key={index} className="flex gap-10 mb-10">
-          <Core tripNumber={index + 1} addNewTrip={addNewTrip} />
-        </div>
+        <Core
+          tripNumber={index + 1}
+          addNewTrip={addNewTrip}
+          removeTrip={removeTrip}
+          tripCount={tripCount}
+          key={index}
+        />
       ))}
     </section>
   );
