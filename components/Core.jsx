@@ -352,12 +352,13 @@ function Core({ tripNumber, addNewTrip }) {
               </button>
               <div className="relative">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-                  <span class="badge text-xs text-white font-medium border-0 bg-emerald-500 whitespace-nowrap">
+                  <span className="badge text-xs text-white font-medium border-0 bg-emerald-500 whitespace-nowrap">
                     Premium ⭐️
                   </span>
                 </div>
                 <button
-                  className={`btn btn-md btn-secondary btn-wide text-center ${
+                  type="button"
+                  className={`btn btn-md btn-secondary btn-wide text-center z-10 ${
                     userStatus?.length && userStatus !== "unpaid"
                       ? "btn-primary"
                       : "btn-disabled"
