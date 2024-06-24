@@ -34,12 +34,21 @@ function TripPlanner() {
   };
 
   const removeTrip = () => {
+    deleteTrip(tripCount);
     if (tripCount === 1) {
       toast.error("Minimum of 1 trip required.");
       return;
     }
     setTripCount(tripCount - 1);
   };
+
+  const deleteTrip = async (tripNumber) => {
+    try {
+      await axios.delete(`/api/trips/trip?email=${sessionEmail}&trip_number=${tripNumber}`);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const getAllTrips = async () => {
     try {
