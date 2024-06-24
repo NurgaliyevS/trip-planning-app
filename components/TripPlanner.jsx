@@ -4,17 +4,20 @@ import { toast } from "react-toastify";
 import { useTrip } from "./useTrip";
 import { useSession } from "next-auth/react";
 import axios from "axios";
+import { usePlausible } from "next-plausible";
 
 function TripPlanner() {
   const [tripCount, setTripCount] = useState(1);
 
   const userStatus = useTrip();
+  const plausible = usePlausible();
   const { data: session } = useSession();
 
   const sessionEmail = session?.user?.email;
   const sessionId = session?.user?.id;
 
   const addNewTrip = () => {
+    plausible("ADD_NEW_TRIP");
     if (userStatus === "Premium" && tripCount >= 3) {
       toast.error("Maximum of 3 trips reached.");
       return;
@@ -34,6 +37,7 @@ function TripPlanner() {
   };
 
   const removeTrip = () => {
+    plausible("REMOVE_TRIP");
     deleteTrip(tripCount);
     if (tripCount === 1) {
       toast.error("Minimum of 1 trip required.");
@@ -43,12 +47,15 @@ function TripPlanner() {
   };
 
   const deleteTrip = async (tripNumber) => {
+    plausible("DELETE_TRIP");
     try {
-      await axios.delete(`/api/trips/trip?email=${sessionEmail}&trip_number=${tripNumber}`);
+      await axios.delete(
+        `/api/trips/trip?email=${sessionEmail}&trip_number=${tripNumber}`
+      );
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   const getAllTrips = async () => {
     try {
