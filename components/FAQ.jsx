@@ -3,8 +3,10 @@
 import Link from "next/link";
 import { buyProduct } from "./buyProduct";
 import { useSession } from "next-auth/react";
+import { usePlausible } from "next-plausible";
 
 function FAQ() {
+  const plausible = usePlausible();
   const { data: session } = useSession();
   return (
     <section className="bg-slate-100 overflow-hidden" id="faq">
@@ -148,6 +150,7 @@ function FAQ() {
             className="btn btn-error group btn-block"
             title="BUY NOW"
             onClick={() => {
+              plausible("BUY_NOW_FAQ");
               buyProduct(session?.user?.email, session?.user?.id);
             }}
           >
