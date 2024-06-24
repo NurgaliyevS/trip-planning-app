@@ -5,8 +5,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { buyProduct } from "./buyProduct";
+import { usePlausible } from "next-plausible";
 
 function Navbar() {
+  const plausible = usePlausible();
   const { data: session } = useSession();
 
   const [showDropdown, setShowDropdown] = useState(false);
@@ -32,7 +34,14 @@ function Navbar() {
           FAQ
         </a>
         {!session?.user ? (
-          <a className="link link-hover" title="Login" href="/api/auth/signin">
+          <a
+            className="link link-hover"
+            title="Login"
+            href="/api/auth/signin"
+            onClick={() => {
+              plausible("LOGIN");
+            }}
+          >
             Login
           </a>
         ) : (
@@ -50,6 +59,7 @@ function Navbar() {
           className="btn btn-error group btn-wide"
           title="BUY NOW"
           onClick={() => {
+            plausible("BUY_NOW_MAIN_HEADER_DESKTOP");
             buyProduct(session?.user?.email, session?.user?.id);
           }}
         >
@@ -103,6 +113,9 @@ function Navbar() {
               className="link link-hover block mt-2"
               title="Login"
               href="/api/auth/signin"
+              onClick={() => {
+                plausible("LOGIN");
+              }}
             >
               Login
             </a>
@@ -125,6 +138,7 @@ function Navbar() {
             className="btn btn-error group btn-wide"
             title="BUY NOW"
             onClick={() => {
+              plausible("BUY_NOW_MAIN_HEADER_MOBILE");
               buyProduct(session?.user?.email, session?.user?.id);
             }}
           >
