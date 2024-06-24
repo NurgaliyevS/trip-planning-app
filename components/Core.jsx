@@ -351,7 +351,7 @@ function Core({ tripNumber, addNewTrip, removeTrip, tripCount }) {
                 Submit
               </button>
 
-              <div className="flex gap-2">
+              <div className="flex gap-10 lg:gap-2 justify-center items-center flex-col lg:flex-row">
                 <div className="relative">
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
                     <span className="badge text-xs text-white font-medium border-0 bg-emerald-500 whitespace-nowrap">
