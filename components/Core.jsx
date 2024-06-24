@@ -5,8 +5,10 @@ import { useSession } from "next-auth/react";
 import Card from "./Card";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { usePlausible } from "next-plausible";
 
 function Core({ tripNumber, addNewTrip, removeTrip, tripCount }) {
+  const plausible = usePlausible();
   const [width, setWidth] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -194,6 +196,7 @@ function Core({ tripNumber, addNewTrip, removeTrip, tripCount }) {
   };
 
   const onSubmit = (data) => {
+    plausible("SUBMIT_FORM")
     const hasIds = data.cards.some((card) => card.id);
     if (!session) {
       localStorage.setItem("savedData", JSON.stringify(data));
@@ -212,11 +215,13 @@ function Core({ tripNumber, addNewTrip, removeTrip, tripCount }) {
   };
 
   const handleLogin = () => {
+    plausible("LOGIN_AFTER_SUBMIT")
     window.location.href = "/api/auth/signin";
     handleCloseModal();
   };
 
   const handleRemoveLastCard = () => {
+    plausible("REMOVE_LAST_CARD")
     if (fields.length > 1) {
       const getValues = methods.getValues();
       const lastCardId = getValues.cards[getValues.cards.length - 1].id;
@@ -263,6 +268,7 @@ function Core({ tripNumber, addNewTrip, removeTrip, tripCount }) {
   };
 
   const checkUserStatus = () => {
+    plausible("ADD_NEW_CARD")
     if (userStatus?.length && userStatus === "unpaid") {
       handleUnpaidUser();
     }
