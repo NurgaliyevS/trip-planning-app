@@ -4,8 +4,10 @@ import Link from "next/link";
 import { buyProduct } from "./buyProduct";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { usePlausible } from "next-plausible";
 
 function Main() {
+  const plausible = usePlausible();
   const { data: session } = useSession();
   return (
     <section className="max-w-5xl mx-auto  flex flex-col items-center justify-center gap-16 lg:gap-20 px-8 py-12 lg:py-32 p-2 lg:p-6">
@@ -72,6 +74,7 @@ function Main() {
           className="btn btn-error group btn-wide"
           title="BUY NOW"
           onClick={() => {
+            plausible("BUY_NOW_MAIN");
             buyProduct(session?.user?.email, session?.user?.id);
           }}
         >
