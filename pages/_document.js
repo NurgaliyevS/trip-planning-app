@@ -4,7 +4,6 @@ export default function Document() {
   return (
     <Html lang="en" data-theme="fantasy">
       <Head>
-        <title>TripPlanss - Plan a trip with multiple destinations</title>
         <meta name="description" content="Plan your trips easily with TripPlanss. Track travel dates, locations, and notes all in one place. Enjoy stress-free travel planning." />
         <meta
         name="keywords"

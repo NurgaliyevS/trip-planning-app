@@ -6,21 +6,27 @@ import Prices from "@/components/Prices";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import TripPlanner from "@/components/TripPlanner";
+import Head from "next/head";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
 export default function Home() {
   return (
-    <main
-      className={`${nunito.className} flex flex-col min-h-screen mx-auto`}
-    >
-      <Navbar />
-      <Main />
-      <Ads />
-      <TripPlanner />
-      <Prices />
-      <FAQ />
-      <Footer />
-    </main>
+    <>
+      <Head>
+        <title>TripPlanss - Plan a trip with multiple destinations</title>
+      </Head>
+      <main
+        className={`${nunito.className} flex flex-col min-h-screen mx-auto`}
+      >
+        <Navbar />
+        <Main />
+        <Ads />
+        <TripPlanner />
+        <Prices />
+        <FAQ />
+        <Footer />
+      </main>
+    </>
   );
 }
