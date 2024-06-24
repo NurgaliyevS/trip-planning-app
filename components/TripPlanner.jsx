@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Core from "./Core";
 import { toast } from "react-toastify";
 import { useTrip } from "./useTrip";
+import { useSession } from "next-auth/react";
+import axios from "axios";
 
 function TripPlanner() {
   const [tripCount, setTripCount] = useState(1);
 
   const userStatus = useTrip();
+  const { data: session } = useSession();
+
+  const sessionEmail = session?.user?.email;
+  const sessionId = session?.user?.id;
 
   const addNewTrip = () => {
     if (userStatus === "Premium" && tripCount >= 3) {
@@ -34,6 +40,23 @@ function TripPlanner() {
     }
     setTripCount(tripCount - 1);
   };
+
+  const getAllTrips = async () => {
+    try {
+      const response = await axios.get(`/api/trips/trip?email=${sessionEmail}`);
+      const trips = response.data?.data;
+      if (trips.length === 0) return;
+      const max = Math.max(...trips.map((trip) => trip.trip_number));
+      setTripCount(max);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (!sessionId) return;
+    getAllTrips();
+  }, [sessionId]);
 
   return (
     <section className="max-w-7xl mx-auto px-8 py-16 md:py-32 min-h-screen">
