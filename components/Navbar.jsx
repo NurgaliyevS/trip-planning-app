@@ -21,7 +21,7 @@ function Navbar() {
     <header className="container max-w-5xl flex items-center flex-wrap justify-between px-8 py-4 mx-auto p-2 lg:p-6">
       <div className="hidden lg:flex items-center gap-2">
         <Link href="/" className="flex items-center" title="Homepage">
-          <Image src={"/favicon.ico"} width={32} height={32} alt="Icon" />
+          <Image src={"/favicon.ico"} width={32} height={32} alt="favicon icon" />
           <span className="font-extrabold text-lg ml-2">Trip Plans</span>
         </Link>
       </div>
@@ -70,7 +70,7 @@ function Navbar() {
       <div className="lg:hidden w-full mt-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center" title="Homepage">
-            <Image src={"/favicon.ico"} width={32} height={32} alt="Icon" />
+            <Image src={"/favicon.ico"} width={32} height={32} alt="favicon" />
             <span className="font-extrabold text-lg ml-2">Trip Plans</span>
           </Link>
         </div>
