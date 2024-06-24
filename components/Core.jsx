@@ -282,7 +282,7 @@ function Core({ tripNumber, addNewTrip, removeTrip, tripCount }) {
   return (
     <>
       <FormProvider {...methods}>
-        <div className={`max-w-5xl mx-auto px-8 min-h-screen ${tripCount > 1 ? "pb-16" : ""} ${tripCount > 1 ? "md:pb-32" : ""}`}>
+        <div className={`max-w-5xl mx-auto min-h-screen ${tripCount > 1 ? "pb-16" : ""} ${tripCount > 1 ? "md:pb-32" : ""}`}>
           <form
             id={`trip-form-${tripNumber}`}
             onSubmit={handleSubmit(onSubmit)}
