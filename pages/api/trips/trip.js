@@ -12,6 +12,15 @@ export default async function handler(req, res) {
         const email = req?.query?.email;
         const tripId = req?.query?.tripId;
 
+        if (!tripId) {
+          const trips = await Trip.find({ userEmail: email });
+          return res.status(200).json({
+            success: true,
+            message: "Trips retrieved successfully",
+            data: trips,
+          });
+        }
+
         const trips = await Trip.find({ userEmail: email, trip_number: tripId });
         return res.status(200).json({
           success: true,
@@ -83,6 +92,27 @@ export default async function handler(req, res) {
       }
     case "DELETE":
       try {
+        if (req.query?.email && req.query?.trip_number) {
+          const trips = await Trip.find({
+            userEmail: req.query.email,
+            trip_number: req.query.trip_number,
+          });
+          if (!trips) {
+            return res
+              .status(404)
+              .json({ success: false, message: "Trips not found" });
+          }
+          await Trip.deleteMany({
+            userEmail: req.query.email,
+            trip_number: req.query.trip_number,
+          });
+          return res.status(200).json({
+            success: true,
+            message: "Trips deleted successfully",
+            data: trips,
+          });
+        }
+
         const trip = await Trip.find({ _id: req.query.id });
         if (!trip) {
           return res
