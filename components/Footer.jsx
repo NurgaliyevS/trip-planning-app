@@ -1,7 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import { usePlausible } from "next-plausible";
 
 function Footer() {
+  const plausible = usePlausible();
+
   return (
     <footer className="container max-w-5xl flex items-center flex-wrap justify-center lg:justify-between px-8 py-24 mx-auto gap-10 lg:gap-0">
       <aside className="flex items-center gap-5 w-full lg:w-auto justify-center flex-col lg:flex-row">
@@ -16,6 +19,9 @@ function Footer() {
           href="https://x.com/tech_nurgaliyev"
           target="_blank"
           title="X tech_nurgaliyev"
+          onClick={() => {
+            plausible("X");
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -37,6 +43,9 @@ function Footer() {
           href="https://www.linkedin.com/in/sabyr-nurgaliyev-43b4a822a/"
           target="_blank"
           title="Linkedin sabyr-nurgaliyev"
+          onClick={() => {
+            plausible("Linkedin");
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -61,6 +70,9 @@ function Footer() {
           href="https://www.producthunt.com/@tech_nurgaliyeev"
           target="_blank"
           title="ProductHunt tech_nurgaliyeev"
+          onClick={() => {
+            plausible("ProductHunt");
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
