@@ -12,7 +12,7 @@ const nunito = Nunito({ subsets: ["latin"] });
 export default function Home() {
   return (
     <main
-      className={`${nunito.className} flex flex-col min-h-screen mx-auto`} id="buy"
+      className={`${nunito.className} flex flex-col min-h-screen mx-auto`}
     >
       <Navbar />
       <Main />
