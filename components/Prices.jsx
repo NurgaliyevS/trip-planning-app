@@ -5,8 +5,10 @@ import Link from "next/link";
 import { buyProduct } from "./buyProduct";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { usePlausible } from "next-plausible";
 
 function Prices() {
+  const plausible = usePlausible();
   const { data: session } = useSession();
   return (
     <section className="bg-slate-100 overflow-hidden" id="pricing">
@@ -101,6 +103,7 @@ function Prices() {
                   className="btn btn-error group btn-block"
                   title="BUY NOW"
                   onClick={() => {
+                    plausible("BUY_NOW_PREMIUM");
                     buyProduct(session?.user?.email, session?.user?.id, "425252");
                   }}
                 >
@@ -191,6 +194,7 @@ function Prices() {
                   className="btn btn-error group btn-block"
                   title="BUY NOW"
                   onClick={() => {
+                    plausible("BUY_NOW_VIP");
                     buyProduct(session?.user?.email, session?.user?.id, "425238");
                   }}
                 >
