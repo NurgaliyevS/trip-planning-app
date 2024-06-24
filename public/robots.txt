@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://tripplanss.com
+
+# Sitemaps
+Sitemap: https://tripplanss.com/sitemap.xml
