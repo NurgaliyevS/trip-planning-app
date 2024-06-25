@@ -9,10 +9,18 @@ function Footer() {
     <footer className="container max-w-5xl flex items-center flex-wrap justify-center lg:justify-between px-8 py-24 mx-auto gap-10 lg:gap-0">
       <aside className="flex items-center gap-5 w-full lg:w-auto justify-center flex-col lg:flex-row">
         <Link href="/" className="flex items-center" title="Homepage">
-          <Image src={"/favicon.ico"} width={32} height={32} alt="Icon" />
+          <Image
+            src={"/logo.webp"}
+            width={32}
+            height={32}
+            alt="TripPlanss - Plan a trip with multiple destinations"
+            className="w-6 md:w-7 h-6"
+          />
           <span className="font-extrabold text-lg ml-2">Trip Plans</span>
         </Link>
-        <p class="flex text-sm items-center justify-center">Copyright © 2024 - All rights reserved</p>
+        <p class="flex text-sm items-center justify-center">
+          Copyright © 2024 - All rights reserved
+        </p>
       </aside>
       <nav className="flex justify-center gap-4 items-center">
         <Link
