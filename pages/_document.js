@@ -24,7 +24,7 @@ export default function Document() {
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content="TripPlanss" />
       <meta property="og:locale" content="en_US" />
-      {/* add og:image */}
+      <meta property="og:image" content="https://tripplanss.com/ogImage.png" />
       <meta property="og:image:alt" content="TripPlanss - how to plan a trip with multiple destinations" />
       <meta property="og:image:type" content="image/png" />
       <meta property="og:image:width" content="1200" />
@@ -44,11 +44,10 @@ export default function Document() {
         name="twitter:description"
         content="Plan your trips easily with TripPlanss. Track travel dates, locations, and notes all in one place. Enjoy stress-free travel planning."
       />
-      {/* <meta
+      <meta
         name="twitter:image"
-        // change it
-        content=""
-      /> */}
+        content="https://tripplanss.com/twitter.png"
+      />
       </Head>
       <body>
         <Main />
