@@ -13,10 +13,6 @@ export default function Document() {
           content="how to plan a trip with multiple destinations, how to plan a road trip with multiple stops, how to plan a trip with friends"
         />
         <meta charSet="UTF-8" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"
-        />
         <meta name="robots" content="index, follow" />
         <meta name="googlebot" content="index, follow" />
         <meta name="theme-color" content="#ffffff" />
@@ -67,6 +63,7 @@ export default function Document() {
           content="https://tripplanss.com/twitter.png"
         />
 
+        <link rel="canonical" href="https://tripplanss.com/" />
         <link
           rel="icon"
           type="image/png"
