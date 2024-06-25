@@ -34,7 +34,7 @@ export default function Document() {
         <meta property="og:locale" content="en_US" />
         <meta
           property="og:image"
-          content="https://tripplanss.com/ogImage.png"
+          content="https://tripplanss.com/og-image.png"
         />
         <meta
           property="og:image:alt"
