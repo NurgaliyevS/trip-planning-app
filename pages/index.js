@@ -7,6 +7,7 @@ import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import TripPlanner from "@/components/TripPlanner";
 import Head from "next/head";
+import Demo from "@/components/Demo";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function Home() {
         <Navbar />
         <Main />
         <Ads />
+        <Demo />
         <TripPlanner />
         <Prices />
         <FAQ />
