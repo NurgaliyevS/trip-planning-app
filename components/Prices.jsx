@@ -37,10 +37,10 @@ function Prices() {
                 <div class="flex flex-col justify-end mb-[4px] text-lg ">
                   <p class="relative">
                     <span class="absolute bg-base-content h-0.5 inset-x-0 top-[53%]"></span>
-                    <span class="text-base-content/80">$50</span>
+                    <span class="text-base-content/80">$14</span>
                   </p>
                 </div>
-                <p class="text-5xl tracking-tight font-extrabold">$25</p>
+                <p class="text-5xl tracking-tight font-extrabold">$7</p>
                 <div class="flex flex-col justify-end mb-[4px]">
                   <p class="text-xs text-base-content/60 uppercase font-semibold">
                     USD
@@ -128,10 +128,10 @@ function Prices() {
                 <div class="flex flex-col justify-end mb-1 text-lg ">
                   <p class="relative">
                     <span class="absolute bg-base-content h-0.5 inset-x-0 top-[53%]"></span>
-                    <span class="text-base-content/80">$78</span>
+                    <span class="text-base-content/80">$18</span>
                   </p>
                 </div>
-                <p class="text-5xl tracking-tight font-extrabold">$39</p>
+                <p class="text-5xl tracking-tight font-extrabold">$9</p>
                 <div class="flex flex-col justify-end mb-[4px]">
                   <p class="text-xs text-base-content/60 uppercase font-semibold">
                     USD
