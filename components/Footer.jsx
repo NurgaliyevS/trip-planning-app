@@ -75,7 +75,7 @@ function Footer() {
           </svg>
         </Link>
         <Link
-          href="https://www.producthunt.com/@tech_nurgaliyeev"
+          href="https://www.producthunt.com/@tech_nurgaliyev"
           target="_blank"
           title="ProductHunt tech_nurgaliyeev"
           onClick={() => {
