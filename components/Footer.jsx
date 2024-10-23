@@ -5,9 +5,18 @@ import { usePlausible } from "next-plausible";
 function Footer() {
   const plausible = usePlausible();
 
+  const projects = [
+    { name: "Environmental Job Boards", url: "https://environmentaljobboards.com", alt: "Environmental Job Boards - Home Page" },
+    { name: "SubPage", url: "https://subpage.io", alt: "SubPage - Home Page" },
+    { name: "PregnantMeal", url: "https://pregnantmeal.com", alt: "PregnantMeal - Home Page" },
+    { name: "UptimeFriend", url: "https://uptimefriend.com", alt: "UptimeFriend - Home Page" },
+    { name: "Weeealth", url: "http://weeealth.com/", alt: "Weeealth - Home Page" },
+  ];
+
   return (
-    <footer className="container max-w-5xl flex items-center flex-wrap justify-center lg:justify-between px-8 py-24 mx-auto gap-10 lg:gap-0">
-      <aside className="flex items-center gap-5 w-full lg:w-auto justify-center flex-col lg:flex-row">
+    <footer className="container max-w-5xl flex flex-col lg:flex-row flex-wrap lg:justify-between px-8 py-24 mx-auto gap-10 lg:gap-0">
+      {/* Logo and Copyright */}
+      <aside className="flex gap-5 w-full lg:w-auto flex-col items-start">
         <Link href="/" className="flex items-center" title="Homepage">
           <Image
             src={"/logo.webp"}
@@ -18,18 +27,35 @@ function Footer() {
           />
           <span className="font-extrabold text-lg ml-2">Trip Plans</span>
         </Link>
-        <p class="flex text-sm items-center justify-center">
-          Copyright © 2024 - All rights reserved
+        <p className="flex text-sm items-center justify-center">
+          Copyright © {new Date().getFullYear()} - All rights reserved
         </p>
       </aside>
-      <nav className="flex justify-center gap-4 items-center">
+
+      {/* Projects Links */}
+      <div className="flex flex-col">
+        {projects.map((project) => (
+          <Link
+            key={project.name}
+            href={project.url}
+            target="_blank"
+            onClick={() => plausible(`Visit_${project.name.replace(/\s+/g, '')}`)}
+            className="text-sm hover:text-primary transition-colors duration-200"
+            alt={project.alt}
+          >
+            {project.name}
+          </Link>
+        ))}
+      </div>
+
+      {/* Social Icons */}
+      <nav className="flex gap-4">
         <Link
           href="https://x.com/tech_nurgaliyev"
           target="_blank"
           title="X tech_nurgaliyev"
-          onClick={() => {
-            plausible("X");
-          }}
+          onClick={() => plausible("X")}
+          className="hover:opacity-80 transition-opacity"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -51,9 +77,8 @@ function Footer() {
           href="https://www.linkedin.com/in/sabyr-nurgaliyev-43b4a822a/"
           target="_blank"
           title="Linkedin sabyr-nurgaliyev"
-          onClick={() => {
-            plausible("Linkedin");
-          }}
+          onClick={() => plausible("Linkedin")}
+          className="hover:opacity-80 transition-opacity"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -78,9 +103,8 @@ function Footer() {
           href="https://www.producthunt.com/@tech_nurgaliyev"
           target="_blank"
           title="ProductHunt tech_nurgaliyeev"
-          onClick={() => {
-            plausible("ProductHunt");
-          }}
+          onClick={() => plausible("ProductHunt")}
+          className="hover:opacity-80 transition-opacity"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
