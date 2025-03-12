@@ -6,11 +6,15 @@ function Footer() {
   const plausible = usePlausible();
 
   const projects = [
-    { name: "Environmental Job Boards", url: "https://environmentaljobboards.com", alt: "Environmental Job Boards - Home Page" },
-    { name: "SubPage", url: "https://subpage.io", alt: "SubPage - Home Page" },
+    { name: "MVP Agency", url: "https://mvpagency.org", alt: "MVP Agency - Home Page" },
+    { name: "Reddit Agency", url: "https://redditagency.com", alt: "Reddit Agency - Home Page" },
     { name: "PregnantMeal", url: "https://pregnantmeal.com", alt: "PregnantMeal - Home Page" },
+    { name: "Best Website Games", url: "https://bestwebsitegames.com", alt: "Best Website Games - Home Page" },
+    { name: "SubPage", url: "https://subpage.io", alt: "SubPage - Home Page" },
     { name: "UptimeFriend", url: "https://uptimefriend.com", alt: "UptimeFriend - Home Page" },
     { name: "Weeealth", url: "http://weeealth.com/", alt: "Weeealth - Home Page" },
+    { name: "TripPlanss", url: "https://tripplanss.com", alt: "TripPlanss - Home Page" },
+    { name: "Environmental Job Boards", url: "https://environmentaljobboards.com", alt: "Environmental Job Boards - Home Page" },
   ];
 
   return (
